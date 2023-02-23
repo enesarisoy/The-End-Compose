@@ -7,9 +7,9 @@ import com.squareup.moshi.JsonClass
 data class AuthorDetails(
     val name: String,
     val username: String,
-    @Json(name = "profile_path")
-    val profilePath: String?,
+    @Json(name = "avatar_path")
+    val avatarPath: String?,
     val rating: Float?,
     @Transient
-    val avatarUrl: String?
+    val avatarUrl: String? = null
 )
