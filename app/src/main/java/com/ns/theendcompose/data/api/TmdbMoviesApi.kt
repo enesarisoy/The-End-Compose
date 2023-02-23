@@ -2,9 +2,11 @@ package com.ns.theendcompose.data.api
 
 import androidx.annotation.FloatRange
 import com.ns.theendcompose.data.model.*
+import com.ns.theendcompose.data.model.movie.MovieDetails
 import com.ns.theendcompose.data.model.movie.MoviesResponse
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface TmdbMoviesApi {
@@ -59,4 +61,61 @@ interface TmdbMoviesApi {
         @Query("language") isoCode: String,
         @Query("region") region: String
     ): MoviesResponse
+
+    @GET("movie/{movie_id}")
+    fun getMovieDetails(
+        @Path("movie_id") movieId: Int,
+        @Query("language") isoCode: String
+    ): Call<MovieDetails>
+
+    @GET("movie/{movie_id}/credits")
+    fun getMovieCredits(
+        @Path("movie_id") movieId: Int,
+        @Query("language") isoCode: String
+    ): Call<Credits>
+
+    @GET("movie/{movie_id}/similar")
+    suspend fun getSimilarMovies(
+        @Path("movie_id") movieId: Int,
+        @Query("page") page: Int,
+        @Query("language") isoCode: String,
+        @Query("region") region: String
+    ): MoviesResponse
+
+    @GET("movie/{movie_id}/recommendations")
+    suspend fun getMoviesRecommendations(
+        @Path("movie_id") movieId: Int,
+        @Query("page") page: Int,
+        @Query("language") isoCode: String,
+        @Query("region") region: String
+    ): MoviesResponse
+
+    @GET("trending/movie/week")
+    suspend fun getTrendingMovies(
+        @Query("page") page: Int,
+        @Query("language") isoCode: String,
+        @Query("region") region: String
+    ): MoviesResponse
+
+    @GET("movie/{movie_id}/images")
+    fun getMovieImages(
+        @Path("movie_id") movieId: Int
+    ): Call<ImagesResponse>
+
+
+    @GET("movie/{movie_id}/reviews")
+    suspend fun getMovieReviews(
+        @Path("movie_id") movieId: Int,
+        @Query("page") page: Int
+    ): ReviewsResponse
+
+    @GET("movie/{movie_id}/reviews")
+    fun getMovieReview(
+        @Path("movie_id") movieId: Int
+    ): Call<ReviewsResponse>
+
+    @GET("genre/movie/list")
+    fun getMovieGenres(
+        @Query("language") isoCode: String
+    ): Call<GenresResponse>
 }

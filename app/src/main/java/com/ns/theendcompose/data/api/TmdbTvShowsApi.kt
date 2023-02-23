@@ -2,9 +2,12 @@ package com.ns.theendcompose.data.api
 
 import androidx.annotation.FloatRange
 import com.ns.theendcompose.data.model.*
+import com.ns.theendcompose.data.model.tvshow.TvSeasonsResponse
+import com.ns.theendcompose.data.model.tvshow.TvShowDetails
 import com.ns.theendcompose.data.model.tvshow.TvShowsResponse
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface TmdbTvShowsApi {
@@ -31,4 +34,110 @@ interface TmdbTvShowsApi {
         @Query("first_air_date.lte")
         toAirDate: DateParam?
     ): TvShowsResponse
+
+    @GET("tv/top_rated")
+    suspend fun getTopRatedTvShows(
+        @Query("page") page: Int,
+        @Query("language") isoCode: String,
+        @Query("region") region: String
+    ): TvShowsResponse
+
+    @GET("tv/on_the_air")
+    suspend fun getOnTheAirTvShows(
+        @Query("page") page: Int,
+        @Query("language") isoCode: String,
+        @Query("region") region: String
+    ): TvShowsResponse
+
+    @GET("tv/popular")
+    suspend fun getPopularTvShows(
+        @Query("page") page: Int,
+        @Query("language") isoCode: String,
+        @Query("region") region: String
+    ): TvShowsResponse
+
+    @GET("tv/airing_today")
+    suspend fun getAiringTodayTvShows(
+        @Query("page") page: Int,
+        @Query("language") isoCode: String,
+        @Query("region") region: String
+    ): TvShowsResponse
+
+    @GET("tv/{tv_id}")
+    fun getTvShowsDetails(
+        @Path("tv_id") tvSeriesId: Int,
+        @Query("language") isoCode: String
+    ): Call<TvShowDetails>
+
+    @GET("tv/{tv_id}/similar")
+    suspend fun getSimilarTvShows(
+        @Path("tv_id") tvSeriesId: Int,
+        @Query("page") page: Int,
+        @Query("language") isoCode: String,
+        @Query("region") region: String
+    ): TvShowsResponse
+
+    @GET("tv/{tv_id}/recommendations")
+    suspend fun getTvShowsRecommendations(
+        @Path("tv_id") tvSeriesId: Int,
+        @Query("page") page: Int,
+        @Query("language") isoCode: String,
+        @Query("region") region: String
+    ): TvShowsResponse
+
+    @GET("tv/{tv_id}/season/{season_number}")
+    fun getTvSeasons(
+        @Path("tv_id") tvSeriesId: Int,
+        @Path("season_number") seasonNumber: Int,
+        @Query("language") isoCode: String
+    ): Call<TvSeasonsResponse>
+
+    @GET("trending/tv/week")
+    suspend fun getTrendingTvShows(
+        @Query("page") page: Int,
+        @Query("language") isoCode: String,
+        @Query("region") region: String
+    ): TvShowsResponse
+
+    @GET("tv/{tv_id}/season/{season_number}")
+    fun getSeasonDetails(
+        @Path("tv_id") tvSeriesId: Int,
+        @Path("season_number") seasonNumber: Int,
+        @Query("language") isoCode: String
+    ): Call<SeasonDetails>
+
+    @GET("tv/{tv_id}/season/{season_number}/aggregate_credits")
+    fun getSeasonCredits(
+        @Path("tv_id") tvSeriesId: Int,
+        @Path("season_number") seasonNumber: Int,
+        @Query("language") isoCode: String,
+    ): Call<AggregatedCredits>
+
+    @GET("tv/{tv_id}/images")
+    fun getTvShowsImages(
+        @Path("tv_id") tvSeriesId: Int
+    ): Call<ImagesResponse>
+
+    @GET("tv/{tv_id}/season/{season_number}/episode/{episode_number}/images")
+    fun getEpisodeImages(
+        @Path("tv_id") tvSeriesId: Int,
+        @Path("season_number") seasonNumber: Int,
+        @Path("episode_number") episodeNumber: Int
+    ): Call<ImagesResponse>
+
+    @GET("tv/{tv_id}/reviews")
+    suspend fun getTvShowsReviews(
+        @Path("tv_id") movieId: Int,
+        @Query("page") page: Int
+    ): ReviewsResponse
+
+    @GET("tv/{tv_id}/reviews")
+    fun getTvShowsReview(
+        @Path("tv_id") tvSeriesId: Int
+    ): Call<ReviewsResponse>
+
+    @GET("genre/tv/list")
+    fun getTvShowsGenres(
+        @Query("language") isoCode: String
+    ): Call<GenresResponse>
 }
