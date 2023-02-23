@@ -1,8 +1,6 @@
-package com.ns.theendcompose.data.api
+package com.ns.theendcompose.data.api.others
 
-import com.ns.theendcompose.data.model.CollectionResponse
-import com.ns.theendcompose.data.model.Config
-import com.ns.theendcompose.data.model.SearchResponse
+import com.ns.theendcompose.data.model.*
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -28,4 +26,24 @@ interface TmdbOthersApi {
         @Path("collection_id") collectionId: Int,
         @Query("language") isoCode: String
     ): Call<CollectionResponse>
+
+    @GET("person/{person_id}")
+    fun getPersonDetails(
+        @Path("person_id") personId: Int,
+        @Query("language") isoCode: String
+    ): Call<PersonDetails>
+
+    @GET("person/{person_id}/combined_credits")
+    fun getCombinedCredits(
+        @Path("person_id") personId: Int,
+        @Query("language") isoCode: String
+    ): Call<CombinedCredits>
+
+    @GET("person/{person_id}/external_ids")
+    fun getPersonExternalIds(
+        @Path("person_id") personId: Int,
+        @Query("language") isoCode: String
+    ): Call<ExternalIds>
+
+
 }

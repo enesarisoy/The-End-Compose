@@ -1,4 +1,4 @@
-package com.ns.theendcompose.data.api
+package com.ns.theendcompose.data.api.movie
 
 import androidx.annotation.FloatRange
 import com.ns.theendcompose.data.model.*
@@ -102,7 +102,6 @@ interface TmdbMoviesApi {
         @Path("movie_id") movieId: Int
     ): Call<ImagesResponse>
 
-
     @GET("movie/{movie_id}/reviews")
     suspend fun getMovieReviews(
         @Path("movie_id") movieId: Int,
@@ -118,4 +117,34 @@ interface TmdbMoviesApi {
     fun getMovieGenres(
         @Query("language") isoCode: String
     ): Call<GenresResponse>
+
+    @GET("movie/{movie_id}/watch/providers")
+    fun getMovieWatchProviders(
+        @Path("movie_id") movieId: Int
+    ): Call<WatchProvidersResponse>
+
+    @GET("movie/{movie_id}/external_ids")
+    fun getMovieExternalIds(
+        @Path("movie_id") movieId: Int,
+    ): Call<ExternalIds>
+
+    @GET("watch/providers/movie")
+    fun getAllMoviesWatchProviders(
+        @Query("language") isoCode: String,
+        @Query("watch_region") region: String
+    ): Call<AllWatchProvidersResponse>
+
+    @GET("movie/{movie_id}/videos")
+    fun getMovieVideos(
+        @Path("movie_id") movieId: Int,
+        @Query("language") isoCode: String
+    ): Call<VideosResponse>
+
+    @GET("discover/movie")
+    suspend fun getOtherMoviesOfDirector(
+        @Query("page") page: Int,
+        @Query("language") isoCode: String,
+        @Query("region") region: String,
+        @Query("with_crew") directorId: Int
+    ): MoviesResponse
 }
