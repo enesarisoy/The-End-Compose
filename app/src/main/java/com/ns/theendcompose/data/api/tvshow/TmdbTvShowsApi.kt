@@ -64,7 +64,7 @@ interface TmdbTvShowsApi {
     ): TvShowsResponse
 
     @GET("tv/{tv_id}")
-    fun getTvShowsDetails(
+    fun getTvShowDetails(
         @Path("tv_id") tvShowId: Int,
         @Query("language") isoCode: String
     ): Call<TvShowDetails>
@@ -114,7 +114,7 @@ interface TmdbTvShowsApi {
     ): Call<AggregatedCredits>
 
     @GET("tv/{tv_id}/images")
-    fun getTvShowsImages(
+    fun getTvShowImages(
         @Path("tv_id") tvShowId: Int
     ): Call<ImagesResponse>
 
@@ -126,13 +126,13 @@ interface TmdbTvShowsApi {
     ): Call<ImagesResponse>
 
     @GET("tv/{tv_id}/reviews")
-    suspend fun getTvShowsReviews(
+    suspend fun getTvShowReviews(
         @Path("tv_id") movieId: Int,
         @Query("page") page: Int
     ): ReviewsResponse
 
     @GET("tv/{tv_id}/reviews")
-    fun getTvShowsReview(
+    fun getTvShowReview(
         @Path("tv_id") tvShowId: Int
     ): Call<ReviewsResponse>
 
@@ -142,12 +142,12 @@ interface TmdbTvShowsApi {
     ): Call<GenresResponse>
 
     @GET("tv/{tv_id}/watch/providers")
-    fun getTvShowsWatchProviders(
+    fun getTvShowWatchProviders(
         @Path("tv_id") tvShowId: Int
     ): Call<WatchProvidersResponse>
 
     @GET("tv/{tv_id}/external_ids")
-    fun getTvShowsExternalIds(
+    fun getTvShowExternalIds(
         @Path("tv_id") tvShowId: Int,
     ): Call<ExternalIds>
 
@@ -158,7 +158,7 @@ interface TmdbTvShowsApi {
     ): Call<AllWatchProvidersResponse>
 
     @GET("tv/{tv_id}/videos")
-    fun getTvShowsVideos(
+    fun getTvShowVideos(
         @Path("tv_id") tvShowId: Int,
         @Query("language") isoCode: String
     ): Call<VideosResponse>
