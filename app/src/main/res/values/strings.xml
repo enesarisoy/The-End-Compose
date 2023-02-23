@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">The End Compose</string>
+    <string name="favourite_type_movie_label">Movies</string>
+    <string name="favourite_type_tv_show_label">Tv Shows</string>
 </resources>
