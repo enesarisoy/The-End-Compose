@@ -1,4 +1,4 @@
-package com.ns.theendcompose.data.model.movie
+package com.ns.theendcompose.data.model.tvshow
 
 import com.ns.theendcompose.data.model.tvshow.TvShow
 import com.squareup.moshi.Json

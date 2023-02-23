@@ -6,7 +6,7 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class TvSeasonsResponse(
+data class TvShowsResponse(
     override val id: Int,
     @Json(name = "air_date")
     val airDate: String?,

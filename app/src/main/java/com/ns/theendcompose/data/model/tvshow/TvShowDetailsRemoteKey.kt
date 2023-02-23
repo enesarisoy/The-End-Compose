@@ -1,4 +1,4 @@
-package com.ns.theendcompose.data.model.movie
+package com.ns.theendcompose.data.model.tvshow
 
 import androidx.room.Entity
 import androidx.room.Index
