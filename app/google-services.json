@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "829608790565",
+    "project_id": "compose-the-end",
+    "storage_bucket": "compose-the-end.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:829608790565:android:5a0bd06effb719a20f0dcc",
+        "android_client_info": {
+          "package_name": "com.ns.theendcompose"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "829608790565-e2bnka0f6di69rt6gjh37klsksvttb7q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdzwfbsu93zu1jhdnOxS6b4hcod-0hrxA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "829608790565-e2bnka0f6di69rt6gjh37klsksvttb7q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
