@@ -17,7 +17,7 @@ data class MovieDetails(
     @Json(name = "imdb_id")
     val imdbId: String?,
     @Json(name = "belongs_to_collection")
-    val collection: Collection?,
+    val collection: com.ns.theendcompose.data.model.Collection?,
     @Json(name = "original_language")
     val originalLanguage: String,
     @Json(name = "original_title")
