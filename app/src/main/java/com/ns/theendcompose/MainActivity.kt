@@ -7,11 +7,9 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -22,6 +20,8 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -33,6 +33,7 @@ import com.ramcosta.composedestinations.animations.defaults.RootNavGraphDefaultA
 import com.ramcosta.composedestinations.animations.rememberAnimatedNavHostEngine
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.HiltAndroidApp
+import timber.log.Timber
 import javax.inject.Inject
 
 val LocalImageUrlParser = staticCompositionLocalOf<ImageUrlParser?> { null }
@@ -45,7 +46,7 @@ class MainActivity : ComponentActivity() {
 
     @OptIn(
         ExperimentalComposeUiApi::class, ExperimentalAnimationApi::class,
-        ExperimentalMaterialNavigationApi::class
+        ExperimentalMaterialNavigationApi::class, ExperimentalMaterial3Api::class
     )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,29 +90,69 @@ class MainActivity : ComponentActivity() {
                     keyboardController?.hide()
                 }
             }
-            TheEndComposeTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
+
+
+            LaunchedEffect(snackBarEvent){
+                snackBarEvent?.let { event ->
+                    snackbarHostState.showSnackbar(
+                        message = getString(event.messageStringRes)
+                    )
+                }
+            }
+
+            LaunchedEffect(lifeCycleOwner){
+                lifeCycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
+                    Timber.d("Update locale")
+                    mainViewModel.updateLocale()
+                }
+            }
+
+            CompositionLocalProvider(values = LocalImageUrlParser provides imageUrlParser) {
+                TheEndComposeTheme {
+                    val navigationBarColor = MaterialTheme.colorScheme.surface
+                    val experiment = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f)
+                    val checkTheme = isSystemInDarkTheme()
+
+                    SideEffect {
+                        if (checkTheme) {
+                            systemUiController.setStatusBarColor(
+                                color = experiment,
+                                darkIcons = false
+                            )
+                        } else {
+                            systemUiController.setStatusBarColor(
+                                color = experiment,
+                                darkIcons = true
+                            )
+                        }
+                        systemUiController.setNavigationBarColor(
+                            color = navigationBarColor,
+                            darkIcons = true
+                        )
+                    }
+                    val snackbarHostState = remember {
+                        SnackbarHostState()
+                    }
+//                    Scaffold(
+//                        snackbarHost = { SnackbarHost(hostState = snackbarHostState)},
+//                        bottomBar = {
+//
+//                        }
+//                    ) {
+//
+//                    }
+
+                    Surface(
+                        modifier = Modifier.fillMaxSize(),
+                        color = MaterialTheme.colorScheme.background
+                    ) {
+
+                    }
                 }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    TheEndComposeTheme {
-        Greeting("Android")
-    }
-}
 

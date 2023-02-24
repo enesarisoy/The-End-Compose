@@ -8,6 +8,7 @@ import com.ns.theendcompose.utils.NetworkStatus
 import com.ns.theendcompose.utils.NetworkStatusTracker
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -21,6 +22,7 @@ class MainViewModel @Inject constructor(
 
     private val connectionStatus = networkStatusTracker.connectionStatus
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     val networkSnackBarEvent: StateFlow<SnackBarEvent?> = connectionStatus.mapLatest { status ->
         when (status) {
             NetworkStatus.Connected -> SnackBarEvent.NetworkConnected
