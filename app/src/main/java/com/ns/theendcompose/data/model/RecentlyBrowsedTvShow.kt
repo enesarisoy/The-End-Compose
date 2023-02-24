@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 import java.util.*
 
 @Entity
-data class RecentlyBrowsedTvSeries(
+data class RecentlyBrowsedTvShow(
     @PrimaryKey
     override val id: Int,
 
