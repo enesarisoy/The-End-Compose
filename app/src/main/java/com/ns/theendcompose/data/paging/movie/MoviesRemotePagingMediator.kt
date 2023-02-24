@@ -12,7 +12,7 @@ import com.ns.theendcompose.data.model.movie.MoviesRemoteKeys
 import com.ns.theendcompose.data.model.movie.MoviesResponse
 import com.ns.theendcompose.data.remote.api.movie.TmdbMoviesApiHelper
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import com.ns.theendcompose.data.local.AppDatabase
+import com.ns.theendcompose.data.local.db.AppDatabase
 import com.squareup.moshi.JsonDataException
 import retrofit2.HttpException
 import java.io.IOException

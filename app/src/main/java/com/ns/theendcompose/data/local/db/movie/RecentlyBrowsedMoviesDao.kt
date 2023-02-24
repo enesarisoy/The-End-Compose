@@ -5,7 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.ns.theendcompose.data.model.RecentlyBrowsedMovie
+import com.ns.theendcompose.data.model.movie.RecentlyBrowsedMovie
 
 @Dao
 interface RecentlyBrowsedMoviesDao {

@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
 data class TvShowsRemoteKeys(
     @PrimaryKey(autoGenerate = false)
     val language: String,
-    val type: TvSeriesEntityType,
+    val type: TvShowEntityType,
     val nextPage: Int?,
     val lastUpdated: Long
 )

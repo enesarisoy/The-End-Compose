@@ -1,8 +1,9 @@
-package com.ns.theendcompose.data.model
+package com.ns.theendcompose.data.model.movie
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.ns.theendcompose.data.model.Presentable
 import java.util.*
 
 @Entity

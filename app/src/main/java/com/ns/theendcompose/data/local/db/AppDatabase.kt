@@ -1,13 +1,12 @@
-package com.ns.theendcompose.data.local
+package com.ns.theendcompose.data.local.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.ns.theendcompose.data.local.db.SearchQueryDao
 import com.ns.theendcompose.data.local.db.movie.*
 import com.ns.theendcompose.data.local.db.tvshow.*
-import com.ns.theendcompose.data.model.RecentlyBrowsedMovie
-import com.ns.theendcompose.data.model.RecentlyBrowsedTvShow
+import com.ns.theendcompose.data.model.movie.RecentlyBrowsedMovie
+import com.ns.theendcompose.data.model.tvshow.RecentlyBrowsedTvShow
 import com.ns.theendcompose.data.model.SearchQuery
 import com.ns.theendcompose.data.model.movie.*
 import com.ns.theendcompose.data.model.tvshow.*
@@ -21,12 +20,12 @@ import com.ns.theendcompose.utils.DateConverters
         RecentlyBrowsedTvShow::class,
         SearchQuery::class,
         MovieEntity::class,
-        MoviesRemoteKeys::class,
         TvShowEntity::class,
+        MoviesRemoteKeys::class,
         TvShowsRemoteKeys::class,
         MovieDetailEntity::class,
+        TvShowDetailEntity::class,
         MovieDetailsRemoteKey::class,
-        TvShowDetails::class,
         TvShowDetailsRemoteKey::class
     ],
     version = 1

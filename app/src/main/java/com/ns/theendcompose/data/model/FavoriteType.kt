@@ -3,7 +3,7 @@ package com.ns.theendcompose.data.model
 import androidx.annotation.StringRes
 import com.ns.theendcompose.R
 
-enum class FavouriteType {
+enum class FavoriteType {
     Movie, TvShow;
 
     @StringRes

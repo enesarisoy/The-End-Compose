@@ -7,7 +7,7 @@ import com.ns.theendcompose.data.model.tvshow.TvShowDetailEntity
 import com.ns.theendcompose.data.model.tvshow.TvShowDetailsRemoteKey
 import com.ns.theendcompose.data.remote.api.tvshow.TmdbTvShowsApiHelper
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import com.ns.theendcompose.data.local.AppDatabase
+import com.ns.theendcompose.data.local.db.AppDatabase
 import com.squareup.moshi.JsonDataException
 import retrofit2.HttpException
 import java.io.IOException

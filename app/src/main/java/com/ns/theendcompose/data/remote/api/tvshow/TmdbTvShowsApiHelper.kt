@@ -45,7 +45,7 @@ interface TmdbTvShowsApiHelper {
         region: String = DeviceLanguage.default.region
     ): TvShowsResponse
 
-    fun getTvShowsDetails(
+    fun getTvShowDetails(
         tvShowId: Int,
         isoCode: String = DeviceLanguage.default.languageCode
     ): Call<TvShowDetails>

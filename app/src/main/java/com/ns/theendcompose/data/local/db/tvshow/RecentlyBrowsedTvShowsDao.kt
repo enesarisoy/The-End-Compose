@@ -5,7 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.ns.theendcompose.data.model.RecentlyBrowsedTvShow
+import com.ns.theendcompose.data.model.tvshow.RecentlyBrowsedTvShow
 
 @Dao
 interface RecentlyBrowsedTvShowsDao {
