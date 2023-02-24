@@ -1,4 +1,4 @@
-package com.ns.theendcompose.data.api.tvshow
+package com.ns.theendcompose.data.remote.api.tvshow
 
 import com.ns.theendcompose.data.model.*
 import com.ns.theendcompose.data.model.tvshow.TvSeasonsResponse
@@ -70,7 +70,7 @@ interface TmdbTvShowsApiHelper {
         isoCode: String = DeviceLanguage.default.languageCode
     ): Call<TvSeasonsResponse>
 
-    suspend fun getTrendingTvSeries(
+    suspend fun getTrendingTvShows(
         page: Int,
         isoCode: String = DeviceLanguage.default.languageCode,
         region: String = DeviceLanguage.default.region
@@ -82,7 +82,7 @@ interface TmdbTvShowsApiHelper {
         isoCode: String = DeviceLanguage.default.languageCode
     ): Call<SeasonDetails>
 
-    fun getTvSeriesImages(tvShowId: Int): Call<ImagesResponse>
+    fun getTvShowImages(tvShowId: Int): Call<ImagesResponse>
 
     fun getEpisodeImages(
         tvShowId: Int,
@@ -90,26 +90,26 @@ interface TmdbTvShowsApiHelper {
         episodeNumber: Int
     ): Call<ImagesResponse>
 
-    suspend fun getTvSeriesReviews(tvShowId: Int, page: Int): ReviewsResponse
+    suspend fun getTvShowReviews(tvShowId: Int, page: Int): ReviewsResponse
 
-    fun getTvSeriesReview(tvShowId: Int): Call<ReviewsResponse>
+    fun getTvShowReview(tvShowId: Int): Call<ReviewsResponse>
 
-    fun getTvSeriesGenres(isoCode: String = DeviceLanguage.default.languageCode): Call<GenresResponse>
+    fun getTvShowsGenres(isoCode: String = DeviceLanguage.default.languageCode): Call<GenresResponse>
 
-    fun getTvSeriesWatchProviders(
+    fun getTvShowWatchProviders(
         tvShowId: Int
     ): Call<WatchProvidersResponse>
 
-    fun getTvSeriesExternalIds(
+    fun getTvShowExternalIds(
         tvShowId: Int
     ): Call<ExternalIds>
 
-    fun getAllTvSeriesWatchProviders(
+    fun getAllTvShowsWatchProviders(
         isoCode: String = DeviceLanguage.default.languageCode,
         region: String = DeviceLanguage.default.region
     ): Call<AllWatchProvidersResponse>
 
-    fun getTvSeriesVideos(
+    fun getTvShowVideos(
         tvShowId: Int,
         isoCode: String = DeviceLanguage.default.languageCode,
     ): Call<VideosResponse>

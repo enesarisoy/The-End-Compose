@@ -1,4 +1,4 @@
-package com.ns.theendcompose.data.api.others
+package com.ns.theendcompose.data.remote.api.others
 
 import com.ns.theendcompose.data.model.*
 import retrofit2.Call

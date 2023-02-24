@@ -1,4 +1,4 @@
-package com.ns.theendcompose.data.api.tvshow
+package com.ns.theendcompose.data.remote.api.tvshow
 
 import com.ns.theendcompose.data.model.*
 import com.ns.theendcompose.data.model.tvshow.TvSeasonsResponse

@@ -1,4 +1,4 @@
-package com.ns.theendcompose.data.api
+package com.ns.theendcompose.data.remote.api
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.squareup.moshi.JsonDataException

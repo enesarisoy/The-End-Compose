@@ -7,16 +7,11 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class TvShowsResponse(
-    override val id: Int,
-    @Json(name = "air_date")
-    val airDate: String?,
-    val name: String,
-    val overview: String,
-    @Json(name = "poster_path")
-    override val posterPath: String?,
-    @Json(name = "season_number")
-    val seasonNumber: Int,
-    val episodes: List<Episode>
-) : Presentable {
-    override val title: String = name
-}
+    val page: Int,
+    @Json(name = "results")
+    val tvShows: List<TvShow>,
+    @Json(name = "total_pages")
+    val totalPages: Int,
+    @Json(name = "total_results")
+    val totalResults: Int
+)

@@ -1,4 +1,4 @@
-package com.ns.theendcompose.data.api
+package com.ns.theendcompose.data.remote.api
 
 data class ApiError(
     val errorCode: Int,

@@ -1,4 +1,4 @@
-package com.ns.theendcompose.data.api.movie
+package com.ns.theendcompose.data.remote.api.movie
 
 import com.ns.theendcompose.data.model.*
 import com.ns.theendcompose.data.model.movie.MovieDetails

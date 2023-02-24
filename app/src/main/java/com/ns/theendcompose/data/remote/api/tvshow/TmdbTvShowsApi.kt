@@ -1,4 +1,4 @@
-package com.ns.theendcompose.data.api.tvshow
+package com.ns.theendcompose.data.remote.api.tvshow
 
 import androidx.annotation.FloatRange
 import com.ns.theendcompose.data.model.*

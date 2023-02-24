@@ -1,4 +1,4 @@
-package com.ns.theendcompose.data.api
+package com.ns.theendcompose.data.remote.api
 
 import android.annotation.SuppressLint
 import com.squareup.moshi.FromJson
