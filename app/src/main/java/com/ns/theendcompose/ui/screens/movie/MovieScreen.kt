@@ -5,17 +5,28 @@ import android.app.Activity
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.foundation.ScrollState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.ns.theendcompose.MainViewModel
 import com.ns.theendcompose.ui.components.dialogs.ExitDialog
 import com.ns.theendcompose.ui.screens.destinations.MovieScreenDestination
+import com.ns.theendcompose.ui.theme.spacing
+import com.ns.theendcompose.utils.isAnyRefreshing
+import com.ns.theendcompose.utils.refreshAll
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -94,6 +105,52 @@ fun MoviesScreenContent(
             topRatedLazyItems,
             trendingLazyItems,
             nowPlayingLazyItems
-        )
+        ).isAnyRefreshing()
     }
+
+    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing = isRefreshing)
+
+    val refreshAllPagingData = {
+        listOf(
+            upcomingLazyItems,
+            topRatedLazyItems,
+            trendingLazyItems,
+            nowPlayingLazyItems
+        ).refreshAll()
+    }
+
+    LaunchedEffect(isRefreshing) {
+        swipeRefreshState.isRefreshing = isRefreshing
+    }
+
+    SwipeRefresh(
+        state = swipeRefreshState,
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background),
+        indicator = { state, trigger ->
+            SwipeRefreshIndicator(
+                modifier = Modifier
+                    .statusBarsPadding()
+                    .padding(top = MaterialTheme.spacing.large),
+                state = state,
+                refreshTriggerDistance = trigger,
+                fade = true,
+                scale = true,
+                backgroundColor = MaterialTheme.colorScheme.surface,
+                contentColor = MaterialTheme.colorScheme.primary
+            )
+        },
+        onRefresh = refreshAllPagingData
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(scrollState),
+            verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium)
+        ) {
+
+        }
+    }
+
 }

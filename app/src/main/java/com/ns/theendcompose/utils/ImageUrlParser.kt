@@ -2,11 +2,11 @@ package com.ns.theendcompose.utils
 
 import android.util.Size
 import com.ns.theendcompose.data.model.ImagesConfig
-import java.lang.Math.abs
+import kotlin.math.abs
 
 class ImageUrlParser(private val imagesConfig: ImagesConfig) {
-
     private val secureBaseUrl = imagesConfig.secureBaseUrl
+
     private val backdropDimensions = convertCodes(imagesConfig.backdropSizes).distinct()
     private val logoDimensions = convertCodes(imagesConfig.logoSizes).distinct()
     private val posterDimensions = convertCodes(imagesConfig.posterSizes).distinct()
@@ -71,10 +71,9 @@ class ImageUrlParser(private val imagesConfig: ImagesConfig) {
         return createSecureUrl(secureBaseUrl, preferredDimension, path)
     }
 
-
     private sealed class Dimension(val code: String) {
-        object Original : Dimension("original")
-        data class Width(val value: Int) : Dimension("code") {
+        object Original : Dimension(code = "original")
+        data class Width(val value: Int) : Dimension(code = code) {
             companion object {
                 const val code = "w"
             }
@@ -92,7 +91,6 @@ class ImageUrlParser(private val imagesConfig: ImagesConfig) {
             is Original -> "original"
         }
     }
-
 
     private fun convertCodes(codes: List<String>): List<Dimension> {
         return codes.mapNotNull { code ->
@@ -116,12 +114,12 @@ class ImageUrlParser(private val imagesConfig: ImagesConfig) {
     private fun createSecureUrl(secureBaseUrl: String, dimension: Dimension, path: String): String {
         return "${secureBaseUrl}${dimension.asCode()}${path}"
     }
-}
 
-enum class MatchingStrategy {
-    FirstBiggerWidth, FirstBiggerHeight, LowestWidthDiff, LowestHeightDiff
-}
+    enum class MatchingStrategy {
+        FirstBiggerWidth, FirstBiggerHeight, LowestWidthDiff, LowestHeightDiff
+    }
 
-enum class ImageType {
-    Backdrop, Logo, Poster, Profile, Still
+    enum class ImageType {
+        Backdrop, Logo, Poster, Profile, Still
+    }
 }
