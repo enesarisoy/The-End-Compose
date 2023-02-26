@@ -1,5 +1,6 @@
 package com.ns.theendcompose.ui.screens.movie
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibilityScope
@@ -13,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.ns.theendcompose.MainViewModel
+import com.ns.theendcompose.ui.components.dialogs.ExitDialog
 import com.ns.theendcompose.ui.screens.destinations.MovieScreenDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
@@ -44,6 +46,7 @@ fun AnimatedVisibilityScope.MovieScreen(
     )
 }
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
 fun MoviesScreenContent(
     uiState: MovieScreenUIState,
@@ -76,12 +79,21 @@ fun MoviesScreenContent(
     }
 
     if (showExitDialog) {
-        AlertDialog(
+        ExitDialog(
             onDismissRequest = dismissDialog,
-            dismissButton = { dismissDialog },
-            confirmButton = {
+            onCancelClick = { dismissDialog },
+            onConfirmClick = {
                 val activity = (context as? Activity)
                 activity?.finish()
             })
+    }
+
+    val isRefreshing by derivedStateOf {
+        listOf(
+            upcomingLazyItems,
+            topRatedLazyItems,
+            trendingLazyItems,
+            nowPlayingLazyItems
+        )
     }
 }
