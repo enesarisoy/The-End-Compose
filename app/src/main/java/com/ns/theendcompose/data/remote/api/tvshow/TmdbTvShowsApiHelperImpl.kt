@@ -11,9 +11,9 @@ import javax.inject.Singleton
 @Singleton
 class TmdbTvShowsApiHelperImpl @Inject constructor(
     private val tmdbTvShowsApi: TmdbTvShowsApi
-): TmdbTvShowsApiHelper {
+) : TmdbTvShowsApiHelper {
     override fun getConfig(): Call<Config> {
-        TODO("Not yet implemented")
+        return tmdbTvShowsApi.getConfig()
     }
 
     override suspend fun discoverTvShows(
@@ -73,7 +73,7 @@ class TmdbTvShowsApiHelperImpl @Inject constructor(
         return tmdbTvShowsApi.getAiringTodayTvShows(page, isoCode, region)
     }
 
-    override fun getTvShowsDetails(tvShowId: Int, isoCode: String): Call<TvShowDetails> {
+    override fun getTvShowDetails(tvShowId: Int, isoCode: String): Call<TvShowDetails> {
         return tmdbTvShowsApi.getTvShowDetails(tvShowId, isoCode)
     }
 
@@ -103,7 +103,7 @@ class TmdbTvShowsApiHelperImpl @Inject constructor(
         return tmdbTvShowsApi.getTvSeasons(tvShowId, seasonNumber, isoCode)
     }
 
-    override suspend fun getTrendingTvSeries(
+    override suspend fun getTrendingTvShows(
         page: Int,
         isoCode: String,
         region: String
@@ -119,7 +119,7 @@ class TmdbTvShowsApiHelperImpl @Inject constructor(
         return tmdbTvShowsApi.getSeasonDetails(tvShowId, seasonNumber, isoCode)
     }
 
-    override fun getTvSeriesImages(tvShowId: Int): Call<ImagesResponse> {
+    override fun getTvShowImages(tvShowId: Int): Call<ImagesResponse> {
         return tmdbTvShowsApi.getTvShowImages(tvShowId)
     }
 
@@ -131,34 +131,34 @@ class TmdbTvShowsApiHelperImpl @Inject constructor(
         return tmdbTvShowsApi.getEpisodeImages(tvShowId, seasonNumber, episodeNumber)
     }
 
-    override suspend fun getTvSeriesReviews(tvShowId: Int, page: Int): ReviewsResponse {
+    override suspend fun getTvShowReviews(tvShowId: Int, page: Int): ReviewsResponse {
         return tmdbTvShowsApi.getTvShowReviews(tvShowId, page)
     }
 
-    override fun getTvSeriesReview(tvShowId: Int): Call<ReviewsResponse> {
+    override fun getTvShowReview(tvShowId: Int): Call<ReviewsResponse> {
         return tmdbTvShowsApi.getTvShowReview(tvShowId)
     }
 
-    override fun getTvSeriesGenres(isoCode: String): Call<GenresResponse> {
+    override fun getTvShowsGenres(isoCode: String): Call<GenresResponse> {
         return tmdbTvShowsApi.getTvShowsGenres(isoCode)
     }
 
-    override fun getTvSeriesWatchProviders(tvShowId: Int): Call<WatchProvidersResponse> {
+    override fun getTvShowWatchProviders(tvShowId: Int): Call<WatchProvidersResponse> {
         return tmdbTvShowsApi.getTvShowWatchProviders(tvShowId)
     }
 
-    override fun getTvSeriesExternalIds(tvShowId: Int): Call<ExternalIds> {
+    override fun getTvShowExternalIds(tvShowId: Int): Call<ExternalIds> {
         return tmdbTvShowsApi.getTvShowExternalIds(tvShowId)
     }
 
-    override fun getAllTvSeriesWatchProviders(
+    override fun getAllTvShowsWatchProviders(
         isoCode: String,
         region: String
     ): Call<AllWatchProvidersResponse> {
         return tmdbTvShowsApi.getAllTvShowsWatchProviders(isoCode, region)
     }
 
-    override fun getTvSeriesVideos(tvShowId: Int, isoCode: String): Call<VideosResponse> {
+    override fun getTvShowVideos(tvShowId: Int, isoCode: String): Call<VideosResponse> {
         return tmdbTvShowsApi.getTvShowVideos(tvShowId, isoCode)
     }
 

@@ -9,6 +9,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -27,10 +28,17 @@ import com.google.accompanist.navigation.material.ExperimentalMaterialNavigation
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.ns.theendcompose.data.model.SnackBarEvent
 import com.ns.theendcompose.data.paging.ConfigDataSource
+import com.ns.theendcompose.ui.components.others.BottomBar
+import com.ns.theendcompose.ui.screens.NavGraphs
+import com.ns.theendcompose.ui.screens.destinations.*
 import com.ns.theendcompose.ui.theme.TheEndComposeTheme
+import com.ns.theendcompose.ui.theme.spacing
 import com.ns.theendcompose.utils.ImageUrlParser
+import com.ns.theendcompose.utils.safeNavigate
+import com.ramcosta.composedestinations.DestinationsNavHost
 import com.ramcosta.composedestinations.animations.defaults.RootNavGraphDefaultAnimations
 import com.ramcosta.composedestinations.animations.rememberAnimatedNavHostEngine
+import com.ramcosta.composedestinations.navigation.dependency
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
@@ -70,7 +78,7 @@ class MainActivity : ComponentActivity() {
                     enterTransition = { fadeIn(animationSpec = tween(500)) },
                     exitTransition = { fadeOut(animationSpec = tween(500)) },
 
-                )
+                    )
             )
             val systemUiController = rememberSystemUiController()
             var currentRoute: String? by rememberSaveable {
@@ -82,17 +90,17 @@ class MainActivity : ComponentActivity() {
             }
 
             navController.apply {
-                addOnDestinationChangedListener{ controller, _, _ ->
+                addOnDestinationChangedListener { controller, _, _ ->
                     currentRoute = controller.currentBackStackEntry?.destination?.route
                     backQueueRoutes = controller.backQueue.map { entry -> entry.destination.route }
                 }
-                addOnDestinationChangedListener{ _, _, _ ->
+                addOnDestinationChangedListener { _, _, _ ->
                     keyboardController?.hide()
                 }
             }
 
 
-            LaunchedEffect(snackBarEvent){
+            LaunchedEffect(snackBarEvent) {
                 snackBarEvent?.let { event ->
                     snackbarHostState.showSnackbar(
                         message = getString(event.messageStringRes)
@@ -100,14 +108,24 @@ class MainActivity : ComponentActivity() {
                 }
             }
 
-            LaunchedEffect(lifeCycleOwner){
-                lifeCycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
+            val showBottomBar by derivedStateOf {
+                currentRoute in setOf(
+                    null,
+                    MovieScreenDestination.route,
+                    TvShowScreenDestination.route,
+                    FavoriteScreenDestination.route,
+                    SearchScreenDestination.route
+                )
+            }
+
+            LaunchedEffect(lifeCycleOwner) {
+                lifeCycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                     Timber.d("Update locale")
                     mainViewModel.updateLocale()
                 }
             }
 
-            CompositionLocalProvider(values = LocalImageUrlParser provides imageUrlParser) {
+            CompositionLocalProvider(LocalImageUrlParser provides imageUrlParser) {
                 TheEndComposeTheme {
                     val navigationBarColor = MaterialTheme.colorScheme.surface
                     val experiment = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f)
@@ -133,20 +151,42 @@ class MainActivity : ComponentActivity() {
                     val snackbarHostState = remember {
                         SnackbarHostState()
                     }
-//                    Scaffold(
-//                        snackbarHost = { SnackbarHost(hostState = snackbarHostState)},
-//                        bottomBar = {
-//
-//                        }
-//                    ) {
-//
-//                    }
 
-                    Surface(
-                        modifier = Modifier.fillMaxSize(),
-                        color = MaterialTheme.colorScheme.background
-                    ) {
-
+                    Scaffold(
+                        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+                        bottomBar = {
+                            BottomBar(
+                                currentRoute = currentRoute,
+                                backQueueRoutes = backQueueRoutes,
+                                visible = showBottomBar
+                            ) { route ->
+                                navController.safeNavigate(
+                                    route = route,
+                                    onSameRouteSelected = { sameRoute ->
+                                        mainViewModel.onSameRouteSelected(sameRoute)
+                                    }
+                                )
+                            }
+                        }
+                    ) { innerPadding ->
+                        Surface(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(
+                                    bottom = if (showBottomBar) {
+                                        innerPadding.calculateBottomPadding()
+                                    } else MaterialTheme.spacing.default
+                                )
+                        ) {
+                            DestinationsNavHost(
+                                navGraph = NavGraphs.root,
+                                engine = navHostEngine,
+                                navController = navController,
+                                dependenciesContainerBuilder = {
+                                    dependency(mainViewModel)
+                                }
+                            )
+                        }
                     }
                 }
             }

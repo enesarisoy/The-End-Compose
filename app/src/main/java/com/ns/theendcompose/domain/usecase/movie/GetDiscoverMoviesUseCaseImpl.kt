@@ -6,6 +6,8 @@ import com.ns.theendcompose.data.model.GenresParam
 import com.ns.theendcompose.data.model.WatchProvidersParam
 import com.ns.theendcompose.data.model.movie.Movie
 import com.ns.theendcompose.data.repository.movie.MovieRepository
+import com.ns.theendcompose.ui.screens.discover.movies.MovieFilterState
+import com.ns.theendcompose.ui.screens.discover.movies.SortInfo
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
