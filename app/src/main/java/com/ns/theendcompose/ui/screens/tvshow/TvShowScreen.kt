@@ -108,8 +108,7 @@ fun TvShowScreenContent(
 
     SwipeRefresh(
         modifier = Modifier
-            .fillMaxSize()
-            .background(color = MaterialTheme.colorScheme.background),
+            .fillMaxSize(),
         state = swipeRefreshState,
         indicator = { state, trigger ->
             SwipeRefreshIndicator(

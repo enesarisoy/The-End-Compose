@@ -18,6 +18,8 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -30,6 +32,7 @@ import com.ns.theendcompose.ui.components.dialogs.ExitDialog
 import com.ns.theendcompose.ui.components.sections.PresentableSection
 import com.ns.theendcompose.ui.components.sections.PresentableTopSection
 import com.ns.theendcompose.ui.screens.destinations.MovieScreenDestination
+import com.ns.theendcompose.ui.theme.TheEndComposeTheme
 import com.ns.theendcompose.ui.theme.spacing
 import com.ns.theendcompose.utils.isAnyRefreshing
 import com.ns.theendcompose.utils.refreshAll
@@ -135,8 +138,7 @@ fun MoviesScreenContent(
     SwipeRefresh(
         state = swipeRefreshState,
         modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
+            .fillMaxSize(),
         indicator = { state, trigger ->
             SwipeRefreshIndicator(
                 modifier = Modifier
@@ -211,5 +213,4 @@ fun MoviesScreenContent(
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
         }
     }
-
 }
