@@ -13,32 +13,37 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.ns.theendcompose.R
 
 @Composable
-@Preview
 fun ExitDialog(
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit = {},
     onConfirmClick: () -> Unit = {},
     onCancelClick: () -> Unit = {},
 ) {
-    AlertDialog(
+    ApplicationDialog(
         modifier = modifier,
         onDismissRequest = onDismissRequest,
-        icon = { Icon(imageVector = Icons.Filled.Warning, contentDescription = null) },
-        title = {
-            Text(text = "Your about to exit the app")
-        },
-        text = {
-            stringResource(id = R.string.exit_dialog_info)
-        },
+        infoText = stringResource(R.string.exit_dialog_info),
         confirmButton = {
-            TextButton(onClick = onConfirmClick) {
-                stringResource(id = R.string.exit_dialog_confirm_button_label)
+            TextButton(
+                onClick = {
+                    onConfirmClick()
+                }
+            ) {
+                Text(
+                    stringResource(R.string.exit_dialog_confirm_button_label)
+                )
             }
         },
         dismissButton = {
-            TextButton(onClick = onCancelClick) {
-                stringResource(id = R.string.exit_dialog_cancel_button_label)
+            TextButton(
+                onClick = {
+                    onCancelClick()
+                }
+            ) {
+                Text(
+                    stringResource(R.string.exit_dialog_cancel_button_label)
+                )
             }
-        }
+        },
     )
 }
