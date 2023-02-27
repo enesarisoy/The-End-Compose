@@ -73,6 +73,7 @@ fun MoviesScreenContent(
     val context = LocalContext.current
     val density = LocalDensity.current
 
+    val discoverLazyItems = uiState.moviesState.discover.collectAsLazyPagingItems()
     val upcomingLazyItems = uiState.moviesState.upcoming.collectAsLazyPagingItems()
     val topRatedLazyItems = uiState.moviesState.topRated.collectAsLazyPagingItems()
     val trendingLazyItems = uiState.moviesState.trending.collectAsLazyPagingItems()
@@ -107,6 +108,7 @@ fun MoviesScreenContent(
 
     val isRefreshing by derivedStateOf {
         listOf(
+            discoverLazyItems,
             upcomingLazyItems,
             topRatedLazyItems,
             trendingLazyItems,
@@ -118,6 +120,7 @@ fun MoviesScreenContent(
 
     val refreshAllPagingData = {
         listOf(
+            discoverLazyItems,
             upcomingLazyItems,
             topRatedLazyItems,
             trendingLazyItems,
@@ -166,6 +169,16 @@ fun MoviesScreenContent(
                 scrollState = scrollState,
                 scrollValueLimit = topSectionScrollLimitValue,
                 onMoreClick = {}
+            )
+
+            PresentableSection(
+                title = stringResource(id = R.string.explore_movies),
+                state = discoverLazyItems,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .animateContentSize(),
+//                onPresentableClick = null,
+//                onMoreClick = onDiscoverMoviesClicked
             )
 
             PresentableSection(
