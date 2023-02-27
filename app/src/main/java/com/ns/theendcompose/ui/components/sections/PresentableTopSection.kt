@@ -1,8 +1,8 @@
 package com.ns.theendcompose.ui.components.sections
 
 import android.annotation.SuppressLint
+import android.util.Size
 import androidx.compose.animation.*
-import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
@@ -29,27 +29,23 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.core.graphics.drawable.toBitmap
 import androidx.paging.compose.LazyPagingItems
 import coil.compose.AsyncImagePainter
-import coil.size.Size
+import com.ns.theendcompose.R
+import com.ns.theendcompose.data.model.DetailPresentable
+import com.ns.theendcompose.data.model.DetailPresentableItemState
+import com.ns.theendcompose.ui.theme.sizes
+import com.ns.theendcompose.ui.theme.spacing
+import com.ns.theendcompose.utils.*
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.google.accompanist.pager.rememberPagerState
-import com.ns.theendcompose.R
-import com.ns.theendcompose.data.model.DetailPresentable
-import com.ns.theendcompose.data.model.DetailPresentableItemState
 import com.ns.theendcompose.ui.components.items.DetailPresentableItem
-import com.ns.theendcompose.ui.theme.sizes
-import com.ns.theendcompose.ui.theme.spacing
-import com.ns.theendcompose.utils.*
-import java.lang.Math.max
 import kotlin.math.absoluteValue
+import kotlin.math.max
 
 @SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalPagerApi::class)
@@ -80,11 +76,13 @@ fun PresentableTopSection(
 
     Box(modifier = Modifier.clip(RectangleShape)) {
         BoxWithConstraints(
-            modifier = Modifier
+            modifier = modifier
                 .matchParentSize()
                 .graphicsLayer {
                     clip = true
-                    shape = BottomRoundedArcShape(ratio = ratio)
+                    shape = BottomRoundedArcShape(
+                        ratio = ratio
+                    )
                 }
         ) {
             val (maxWidth, maxHeight) = getMaxSizeInt()
@@ -93,17 +91,19 @@ fun PresentableTopSection(
                 modifier = Modifier.fillMaxSize()
             ) { movie ->
                 val backdropScale = remember {
-                    Animatable(1f)
+                    androidx.compose.animation.core.Animatable(1f)
                 }
                 val backgroundPainter = rememberTmdbImagePainter(
                     path = movie?.backdropPath,
                     type = ImageUrlParser.ImageType.Backdrop,
-                    preferredSize = android.util.Size(maxWidth, maxHeight),
-                    builder = { allowHardware(false) }
+                    preferredSize = Size(maxWidth, maxHeight),
+                    builder = {
+                        allowHardware(false)
+                    }
                 )
                 val backgroundPainterState = backgroundPainter.state
 
-                LaunchedEffect(backgroundPainterState){
+                LaunchedEffect(backgroundPainterState) {
                     if (backgroundPainterState is AsyncImagePainter.State.Success) {
                         isDark = backgroundPainterState.result.drawable.toBitmap().run { isDark() }
 
@@ -127,7 +127,6 @@ fun PresentableTopSection(
                             )
                         )
                 )
-
                 Image(
                     modifier = Modifier
                         .blur(8.dp)
@@ -147,7 +146,19 @@ fun PresentableTopSection(
                 )
             }
         }
-
+        Box(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .matchParentSize()
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(
+                            Color.Transparent,
+                            MaterialTheme.colorScheme.background
+                        )
+                    )
+                )
+        )
         Box(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
@@ -187,7 +198,7 @@ fun PresentableTopSection(
                         Text(
                             text = stringResource(R.string.movies_more),
                             color = contentColor,
-                            fontSize = 12.sp
+                            style = MaterialTheme.typography.titleSmall
                         )
                         Icon(
                             imageVector = Icons.Filled.KeyboardArrowRight,
@@ -199,7 +210,7 @@ fun PresentableTopSection(
             HorizontalPager(
                 count = max(state.itemCount, 1),
                 state = pagerState
-            ) {page ->
+            ) { page ->
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -256,6 +267,7 @@ fun PresentableTopSection(
                         }
                     )
                 }
+
             }
         }
     }

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -13,8 +14,10 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -22,7 +25,10 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.ns.theendcompose.MainViewModel
+import com.ns.theendcompose.R
 import com.ns.theendcompose.ui.components.dialogs.ExitDialog
+import com.ns.theendcompose.ui.components.sections.PresentableSection
+import com.ns.theendcompose.ui.components.sections.PresentableTopSection
 import com.ns.theendcompose.ui.screens.destinations.MovieScreenDestination
 import com.ns.theendcompose.ui.theme.spacing
 import com.ns.theendcompose.utils.isAnyRefreshing
@@ -149,7 +155,47 @@ fun MoviesScreenContent(
                 .verticalScroll(scrollState),
             verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.medium)
         ) {
+            PresentableTopSection(
+                title = stringResource(id = R.string.now_playing_movies),
+                state = nowPlayingLazyItems,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .onGloballyPositioned { coordinates ->
+                        topSectionHeight = coordinates.size.height.toFloat()
+                    },
+                scrollState = scrollState,
+                scrollValueLimit = topSectionScrollLimitValue,
+                onMoreClick = {}
+            )
 
+            PresentableSection(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .animateContentSize(),
+                title = stringResource(R.string.upcoming_movies),
+                state = upcomingLazyItems,
+//                onPresentableClick = null,
+//                onMoreClick = onDiscoverMoviesClicked
+            )
+            PresentableSection(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .animateContentSize(),
+                title = stringResource(R.string.trending_movies),
+                state = trendingLazyItems,
+//                onPresentableClick = null,
+//                onMoreClick = onDiscoverMoviesClicked
+            )
+            PresentableSection(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .animateContentSize(),
+                title = stringResource(R.string.top_rated_movies),
+                state = topRatedLazyItems,
+//                onPresentableClick = null,
+//                onMoreClick = onDiscoverMoviesClicked
+            )
+            Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
         }
     }
 
