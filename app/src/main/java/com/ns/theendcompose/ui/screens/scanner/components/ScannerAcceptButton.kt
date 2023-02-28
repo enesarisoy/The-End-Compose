@@ -24,7 +24,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun MovplayScannerAcceptButton(
+fun ScannerAcceptButton(
     isScanningInProgress: Boolean,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {}

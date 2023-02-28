@@ -30,7 +30,7 @@ import com.ns.theendcompose.utils.Roi
 import com.ns.theendcompose.utils.toBitmap
 
 @Composable
-fun MovplayTitleScanner(
+fun TitleScanner(
     modifier: Modifier = Modifier,
     isScanningInProgress: Boolean = false,
     errorText: String? = null,
@@ -129,7 +129,7 @@ fun MovplayTitleScanner(
             }
         }
 
-        MovplayScannerAcceptButton(
+        ScannerAcceptButton(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(MaterialTheme.spacing.large)
