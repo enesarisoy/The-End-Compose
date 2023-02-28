@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 
 @Composable
-fun ScrollToStartButton(
+fun ScrollToTopButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) {
@@ -24,7 +24,7 @@ fun ScrollToStartButton(
     ) {
         Icon(
             imageVector = Icons.Filled.ArrowBack,
-            contentDescription = "scroll to start",
+            contentDescription = "scroll to top",
             tint = MaterialTheme.colorScheme.primary
         )
     }

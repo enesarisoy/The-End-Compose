@@ -26,7 +26,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.items
 import com.ns.theendcompose.data.model.Presentable
 import com.ns.theendcompose.data.model.PresentableItemState
-import com.ns.theendcompose.ui.components.button.ScrollToStartButton
+import com.ns.theendcompose.ui.components.button.ScrollToTopButton
 import com.ns.theendcompose.ui.components.items.PresentableItem
 import com.ns.theendcompose.ui.components.texts.SectionLabel
 import com.ns.theendcompose.ui.theme.spacing
@@ -144,7 +144,7 @@ fun PresentableSection(
                     targetScale = 0.3f
                 )
             ) {
-                ScrollToStartButton(
+                ScrollToTopButton(
                     onClick = onScrollToStartClick
                 )
             }
