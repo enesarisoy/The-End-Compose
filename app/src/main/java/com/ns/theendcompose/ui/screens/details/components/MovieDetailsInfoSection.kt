@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -64,8 +65,7 @@ fun MovieDetailsInfoSection(
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
                             text = details.title,
-//                            color = Color.White,
-//                            fontSize = 22.sp,
+                            style = MaterialTheme.typography.headlineSmall,
                             fontWeight = FontWeight.ExtraBold
                         )
                         if (otherOriginalTitle) {
@@ -103,7 +103,11 @@ fun MovieDetailsInfoSection(
                                 }
                             }
                         ) {
-                            Image(imageVector = Icons.Filled.Share, contentDescription = "share")
+                            Icon(
+                                imageVector = Icons.Filled.Share,
+                                contentDescription = "share",
+                                tint = MaterialTheme.colorScheme.primary
+                            )
                         }
                     }
                 }

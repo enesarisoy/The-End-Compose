@@ -13,7 +13,6 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.unit.sp
 import com.ns.theendcompose.R
 
 @Composable
@@ -26,14 +25,14 @@ fun ExpandableText(
     var isExpanded by remember { mutableStateOf(false) }
     val textLayoutResultState = remember { mutableStateOf<TextLayoutResult?>(null) }
     var isClickable by remember { mutableStateOf(false) }
-
+    val textStyle = MaterialTheme.typography.bodyLarge
     var finalText by remember {
         mutableStateOf(
             buildAnnotatedString {
                 withStyle(
                     style = SpanStyle(
-                        color = Color.White,
-                        fontSize = 12.sp
+//                        color = Color.Red,
+//                        fontSize = 12.sp
                     )
                 ) {
                     append(text)
@@ -53,8 +52,8 @@ fun ExpandableText(
             finalText = buildAnnotatedString {
                 withStyle(
                     style = SpanStyle(
-                        color = Color.White,
-                        fontSize = 12.sp
+//                        color = Color.Green,
+
                     )
                 ) {
                     append(text)
@@ -62,7 +61,7 @@ fun ExpandableText(
                 withStyle(
                     style = SpanStyle(
                         color = postfixColor,
-                        fontSize = 12.sp
+//                        fontSize = 12.sp
                     )
                 ) {
                     append("  $postfixText")
@@ -79,8 +78,8 @@ fun ExpandableText(
                 finalText = buildAnnotatedString {
                     withStyle(
                         style = SpanStyle(
-                            color = Color.White,
-                            fontSize = 12.sp
+//                            color = Color.Blue,
+//                            fontSize = 12.sp
                         )
                     ) {
                         append("$adjustedText… ")
@@ -88,7 +87,7 @@ fun ExpandableText(
                     withStyle(
                         style = SpanStyle(
                             color = postfixColor,
-                            fontSize = 12.sp
+//                            fontSize = 12.sp
                         )
                     ) {
                         append(postfixText)

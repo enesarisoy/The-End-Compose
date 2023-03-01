@@ -1,6 +1,9 @@
 import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -10,16 +13,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.ns.theendcompose.R
 import com.ns.theendcompose.data.model.ExternalId
 import com.ns.theendcompose.data.model.ShareDetails
 import com.ns.theendcompose.data.model.Video
 import com.ns.theendcompose.data.model.movie.MovieDetails
 import com.ns.theendcompose.ui.components.dialogs.ErrorDialog
+import com.ns.theendcompose.ui.components.others.AnimatedContentContainer
+import com.ns.theendcompose.ui.components.sections.ExternalIdsSection
 import com.ns.theendcompose.ui.components.sections.PresentableDetailsTopSection
+import com.ns.theendcompose.ui.components.sections.WatchProvidersSection
 import com.ns.theendcompose.ui.screens.destinations.MovieDetailsScreenDestination
+import com.ns.theendcompose.ui.screens.details.components.MovieDetailsInfoSection
+import com.ns.theendcompose.ui.screens.details.components.MovieDetailsTopContent
 import com.ns.theendcompose.ui.screens.details.movie.MovieDetailsScreenArgs
 import com.ns.theendcompose.ui.screens.details.movie.MovieDetailsScreenTransitions
 import com.ns.theendcompose.ui.screens.details.movie.MovieDetailsScreenUIState
@@ -197,7 +207,56 @@ fun MovieDetailsScreenContent(
                 scrollState = scrollState,
                 scrollValueLimit = topSectionScrollLimitValue
             ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(
+                            MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
+                            shape = MaterialTheme.shapes.small
+                        )
+                        .padding(MaterialTheme.spacing.small)
+                ) {
+                    MovieDetailsTopContent(
+                        modifier = Modifier.fillMaxWidth(),
+                        movieDetails = uiState.movieDetails
+                    )
+                }
+                Spacer(modifier = Modifier.weight(1f))
+                Crossfade(
+                    modifier = Modifier.fillMaxWidth(),
+                    targetState = uiState.associatedContent.externalIds
+                ) { ids ->
+                    if (ids != null) {
+                        ExternalIdsSection(
+                            modifier = Modifier.fillMaxWidth(),
+                            externalIds = ids,
+                            onExternalIdClick = onExternalIdClicked
+                        )
+                    }
+                }
+            }
+            MovieDetailsInfoSection(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = MaterialTheme.spacing.medium)
+                    .animateContentSize(),
+                movieDetails = uiState.movieDetails,
+                watchAtTime = uiState.additionalMovieDetailsInfo.watchAtTime,
+                imdbExternalId = imdbExternalId,
+                onShareClicked = onShareClicked
+            )
 
+            AnimatedContentContainer(
+                modifier = Modifier.fillMaxWidth(),
+                visible = uiState.additionalMovieDetailsInfo.watchProviders != null
+            ) {
+                if (uiState.additionalMovieDetailsInfo.watchProviders != null) {
+                    WatchProvidersSection(
+                        modifier = Modifier.fillMaxWidth(),
+                        watchProviders = uiState.additionalMovieDetailsInfo.watchProviders,
+                        title = stringResource(R.string.available_at)
+                    )
+                }
             }
         }
     }
