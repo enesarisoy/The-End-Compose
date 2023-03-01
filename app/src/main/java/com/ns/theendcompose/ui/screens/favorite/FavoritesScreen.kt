@@ -9,7 +9,7 @@ import com.ramcosta.composedestinations.annotation.Destination
 
 @Destination
 @Composable
-fun FavoriteScreen() {
+fun FavoritesScreen() {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally

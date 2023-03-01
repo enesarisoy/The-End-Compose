@@ -113,7 +113,7 @@ class MainActivity : ComponentActivity() {
                     null,
                     MovieScreenDestination.route,
                     TvShowScreenDestination.route,
-                    FavoriteScreenDestination.route,
+                    FavoritesScreenDestination.route,
                     SearchScreenDestination.route
                 )
             }

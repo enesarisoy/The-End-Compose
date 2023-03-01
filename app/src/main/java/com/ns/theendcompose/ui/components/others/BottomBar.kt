@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.ns.theendcompose.R
-import com.ns.theendcompose.ui.screens.destinations.FavoriteScreenDestination
+import com.ns.theendcompose.ui.screens.destinations.FavoritesScreenDestination
 import com.ns.theendcompose.ui.screens.destinations.MovieScreenDestination
 import com.ns.theendcompose.ui.screens.destinations.SearchScreenDestination
 import com.ns.theendcompose.ui.screens.destinations.TvShowScreenDestination
@@ -36,7 +36,7 @@ fun BottomBar(
         mutableSetOf(
             MovieScreenDestination.route,
             TvShowScreenDestination.route,
-            FavoriteScreenDestination.route,
+            FavoritesScreenDestination.route,
             SearchScreenDestination.route
         )
     }
@@ -74,8 +74,8 @@ fun BottomBar(
                 label = stringResource(id = R.string.favourites_label),
                 selectedIcon = Icons.Filled.Favorite,
                 unSelectedIcon = Icons.Outlined.FavoriteBorder,
-                selected = selectedRoute == FavoriteScreenDestination.route,
-                onClick = { onItemClicked(FavoriteScreenDestination.route) }
+                selected = selectedRoute == FavoritesScreenDestination.route,
+                onClick = { onItemClicked(FavoritesScreenDestination.route) }
             )
             TheEndNavBarItem(
                 label = stringResource(id = R.string.search_label),

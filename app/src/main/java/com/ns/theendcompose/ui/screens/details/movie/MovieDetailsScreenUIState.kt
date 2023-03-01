@@ -67,7 +67,7 @@ data class DirectorMovies(
 @Stable
 data class AdditionalMovieDetailsInfo(
     val isFavorite: Boolean,
-    val watchAttIME: Date?,
+    val watchAtTime: Date?,
     val watchProviders: WatchProviders?,
     val credits: Credits?,
     val reviewsCount: Int
@@ -75,7 +75,7 @@ data class AdditionalMovieDetailsInfo(
     companion object {
         val default: AdditionalMovieDetailsInfo = AdditionalMovieDetailsInfo(
             isFavorite = false,
-            watchAttIME = null,
+            watchAtTime = null,
             watchProviders = null,
             credits = null,
             reviewsCount = 0
