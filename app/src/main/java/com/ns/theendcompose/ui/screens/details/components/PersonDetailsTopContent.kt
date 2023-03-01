@@ -9,19 +9,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.ns.theendcompose.R
-import com.ns.theendcompose.data.model.movie.MovieDetails
+import com.ns.theendcompose.data.model.PersonDetails
 import com.ns.theendcompose.ui.components.texts.LabeledText
 import com.ns.theendcompose.ui.theme.spacing
-import com.ns.theendcompose.utils.formattedMoney
+import com.ns.theendcompose.utils.formatted
 
 @Composable
-fun MovieDetailsTopContent(
-    movieDetails: MovieDetails?,
+fun PersonDetailsTopContent(
+    personDetails: PersonDetails?,
     modifier: Modifier = Modifier
 ) {
     Crossfade(
         modifier = modifier,
-        targetState = movieDetails
+        targetState = personDetails
     ) { details ->
         if (details != null) {
             Column(
@@ -29,20 +29,28 @@ fun MovieDetailsTopContent(
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)
             ) {
                 LabeledText(
-                    label = stringResource(R.string.movie_details_status),
-                    text = stringResource(details.status.getLabel())
+                    label = stringResource(R.string.person_details_screen_know_for_label),
+                    text = details.knownFor
                 )
 
-                if (details.budget > 0) {
+                details.birthPlace?.let { birthplace ->
                     LabeledText(
-                        label = stringResource(R.string.movie_details_budget),
-                        text = details.budget.formattedMoney()
+                        label = stringResource(R.string.person_details_screen_birthplace),
+                        text = birthplace
                     )
                 }
-                if (details.revenue > 0) {
+
+                details.birthday?.let { date ->
                     LabeledText(
-                        label = stringResource(R.string.movie_details_boxoffice),
-                        text = details.revenue.formattedMoney()
+                        label = stringResource(R.string.person_details_screen_birthday),
+                        text = date.formatted()
+                    )
+                }
+
+                details.deathDate?.let { date ->
+                    LabeledText(
+                        label = stringResource(R.string.person_details_screen_death_date),
+                        text = date.formatted()
                     )
                 }
             }

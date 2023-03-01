@@ -1,10 +1,30 @@
 package com.ns.theendcompose.ui.screens.discover.tvshows
 
 import androidx.compose.runtime.Stable
+import androidx.paging.PagingData
 import com.ns.theendcompose.data.model.DateRange
 import com.ns.theendcompose.data.model.Genre
 import com.ns.theendcompose.data.model.ProviderSource
 import com.ns.theendcompose.data.model.VoteRange
+import com.ns.theendcompose.data.model.tvshow.TvShow
+import com.ns.theendcompose.ui.screens.discover.movies.SortInfo
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
+
+@Stable
+data class DiscoverTvShowsScreenUiState(
+    val sortInfo: SortInfo,
+    val filterState: TvShowFilterState,
+    val tvShow: Flow<PagingData<TvShow>>
+) {
+    companion object {
+        val default: DiscoverTvShowsScreenUiState = DiscoverTvShowsScreenUiState(
+            sortInfo = SortInfo.default,
+            filterState = TvShowFilterState.default,
+            tvShow = emptyFlow()
+        )
+    }
+}
 
 @Stable
 data class TvShowFilterState(

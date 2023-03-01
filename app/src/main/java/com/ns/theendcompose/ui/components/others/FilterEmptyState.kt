@@ -1,9 +1,8 @@
-package com.ns.theendcompose.ui.screens.search.components
+package com.ns.theendcompose.ui.components.others
 
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -20,11 +19,11 @@ import com.ns.theendcompose.R
 import com.ns.theendcompose.ui.theme.spacing
 
 @Composable
-fun SearchEmptyState(
+fun FilterEmptyState(
     modifier: Modifier = Modifier,
-    onEditButtonClicked: () -> Unit = {}
+    onFilterButtonClicked: () -> Unit = {}
 ) {
-    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.lottie_empty))
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.lottie_search))
     val dynamicProperties = rememberLottieDynamicProperties(
         rememberLottieDynamicProperty(
             property = LottieProperty.COLOR_FILTER,
@@ -44,19 +43,19 @@ fun SearchEmptyState(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         LottieAnimation(
-            modifier = Modifier.size(250.dp),
+            modifier = Modifier.size(160.dp),
             composition = composition,
-            speed = 0.5f,
+            speed = 0.2f,
             iterations = LottieConstants.IterateForever,
             dynamicProperties = dynamicProperties
         )
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
         Text(
-            text = stringResource(R.string.search_empty_state),
+            text = stringResource(R.string.filter_empty_info_text),
         )
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
-        OutlinedButton(onClick = onEditButtonClicked) {
-            Text(text = stringResource(R.string.search_empty_state_edit_button_label))
+        OutlinedButton(onClick = onFilterButtonClicked) {
+            Text(text = stringResource(R.string.filter_empty_button_change_filters_label))
         }
     }
 }

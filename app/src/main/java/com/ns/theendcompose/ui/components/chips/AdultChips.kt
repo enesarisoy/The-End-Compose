@@ -10,13 +10,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ns.theendcompose.ui.theme.DarkRed
 import com.ns.theendcompose.ui.theme.spacing
 
-@Preview
 @Composable
 fun AdultChips(
     modifier: Modifier = Modifier
@@ -31,11 +29,9 @@ fun AdultChips(
         contentAlignment = Alignment.Center
     ) {
         Text(
+            modifier = Modifier.padding(MaterialTheme.spacing.extraSmall),
             text = "18+",
-            modifier = modifier.padding(MaterialTheme.spacing.extraSmall),
-            color = Color.White,
             fontSize = 16.sp
         )
     }
-
 }

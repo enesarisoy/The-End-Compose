@@ -1,12 +1,13 @@
-package com.ns.theendcompose.ui.screens.search.components
+package com.ns.theendcompose.ui.components.others
 
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
+import androidx.annotation.StringRes
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -17,13 +18,27 @@ import androidx.compose.ui.unit.dp
 import com.airbnb.lottie.LottieProperty
 import com.airbnb.lottie.compose.*
 import com.ns.theendcompose.R
+import com.ns.theendcompose.data.model.FavoriteType
 import com.ns.theendcompose.ui.theme.spacing
 
 @Composable
-fun SearchEmptyState(
-    modifier: Modifier = Modifier,
-    onEditButtonClicked: () -> Unit = {}
+fun FavoriteEmptyState(
+    type: FavoriteType,
+    modifier: Modifier,
+    onButtonClick: () -> Unit = {}
 ) {
+    @StringRes
+    val infoTextResId = when (type) {
+        FavoriteType.Movie -> R.string.favourite_empty_movies_info_text
+        FavoriteType.TvShow -> R.string.favourite_empty_tv_series_info_text
+    }
+
+    @StringRes
+    val buttonLabelResId = when (type) {
+        FavoriteType.Movie -> R.string.favourite_empty_navigate_to_movies_button_label
+        FavoriteType.TvShow -> R.string.favourite_empty_navigate_to_tv_series_button_label
+    }
+
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.lottie_empty))
     val dynamicProperties = rememberLottieDynamicProperties(
         rememberLottieDynamicProperty(
@@ -40,11 +55,11 @@ fun SearchEmptyState(
 
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
         LottieAnimation(
-            modifier = Modifier.size(250.dp),
+            modifier = Modifier.size(200.dp),
             composition = composition,
             speed = 0.5f,
             iterations = LottieConstants.IterateForever,
@@ -52,11 +67,11 @@ fun SearchEmptyState(
         )
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
         Text(
-            text = stringResource(R.string.search_empty_state),
+            text = stringResource(infoTextResId),
         )
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
-        OutlinedButton(onClick = onEditButtonClicked) {
-            Text(text = stringResource(R.string.search_empty_state_edit_button_label))
+        TextButton(onClick = onButtonClick) {
+            Text(modifier = Modifier.animateContentSize(), text = stringResource(buttonLabelResId))
         }
     }
 }

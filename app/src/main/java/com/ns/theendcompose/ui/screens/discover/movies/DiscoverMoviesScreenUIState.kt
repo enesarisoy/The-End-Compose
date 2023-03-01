@@ -1,8 +1,29 @@
 package com.ns.theendcompose.ui.screens.discover.movies
 
 import androidx.compose.runtime.Stable
+import androidx.paging.PagingData
 import com.ns.theendcompose.data.model.*
+import com.ns.theendcompose.data.model.movie.Movie
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 
+//State
+@Stable
+class DiscoverMoviesScreenUIState(
+    val sortInfo: SortInfo,
+    val filterState: MovieFilterState,
+    val movies: Flow<PagingData<Movie>>
+) {
+    companion object {
+        val default: DiscoverMoviesScreenUIState = DiscoverMoviesScreenUIState(
+            sortInfo = SortInfo.default,
+            filterState = MovieFilterState.default,
+            movies = emptyFlow()
+        )
+    }
+}
+
+//Event
 @Stable
 data class SortInfo(
     val sortType: SortType,
