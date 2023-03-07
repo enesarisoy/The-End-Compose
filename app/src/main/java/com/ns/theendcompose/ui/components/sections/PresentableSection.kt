@@ -24,12 +24,14 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.items
+import com.ns.theendcompose.R
 import com.ns.theendcompose.data.model.Presentable
 import com.ns.theendcompose.data.model.PresentableItemState
 import com.ns.theendcompose.ui.components.button.ScrollToTopButton
 import com.ns.theendcompose.ui.components.items.PresentableItem
 import com.ns.theendcompose.ui.components.texts.SectionLabel
 import com.ns.theendcompose.ui.theme.spacing
+import com.ns.theendcompose.utils.isScrollingTowardsStart
 import com.ns.theendcompose.utils.isScrolllingTowardsStart
 import kotlinx.coroutines.launch
 
@@ -44,7 +46,7 @@ fun PresentableSection(
     showLoadingAtRefresh: Boolean = true,
     showMoreButton: Boolean = true,
     onMoreClick: () -> Unit = {},
-    onPresentableClick: (Int) -> Unit = {},
+    onPresentableClick: (Int) -> Unit = {}
 ) {
     val coroutineScope = rememberCoroutineScope()
     val listState = rememberLazyListState()
@@ -54,13 +56,11 @@ fun PresentableSection(
         val visibleMaxItem = listState.firstVisibleItemIndex > scrollToBeginningItemsStart
         visibleMaxItem && isScrollingLeft
     }
-
     val onScrollToStartClick: () -> Unit = {
         coroutineScope.launch {
             listState.animateScrollToItem(0)
         }
     }
-
     val isNotEmpty by derivedStateOf {
         state.run {
             if (showLoadingAtRefresh) {
@@ -70,9 +70,8 @@ fun PresentableSection(
             }
         }
     }
-
     if (isNotEmpty) {
-        Column(modifier = Modifier) {
+        Column(modifier = modifier) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -87,7 +86,7 @@ fun PresentableSection(
                 if (showMoreButton) {
                     TextButton(onClick = onMoreClick) {
                         Text(
-                            text = stringResource(id = com.ns.theendcompose.R.string.movies_more),
+                            text = stringResource(R.string.movies_more),
                             style = MaterialTheme.typography.titleSmall
                         )
                         Icon(
@@ -97,56 +96,64 @@ fun PresentableSection(
                     }
                 }
             }
-        }
-
-        Box {
-            LazyRow(
-                state = listState,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = MaterialTheme.spacing.small),
-                horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small),
-                contentPadding = PaddingValues(horizontal = MaterialTheme.spacing.medium)
-            ) {
-                items(state) { movie ->
-                    movie?.let {
-                        PresentableItem(
-                            presentableState = PresentableItemState.Result(movie),
-                            onClick = { onPresentableClick(it.id) })
+            Box {
+                LazyRow(
+                    state = listState,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = MaterialTheme.spacing.small),
+                    horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small),
+                    contentPadding = PaddingValues(horizontal = MaterialTheme.spacing.medium)
+                ) {
+                    items(state) { movie ->
+                        movie?.let {
+                            PresentableItem(
+                                //modifier = Modifier.animateItemPlacement(),
+                                presentableState = PresentableItemState.Result(movie),
+                                onClick = { onPresentableClick(it.id) }
+                            )
+                        }
                     }
-                }
-
-                state.apply {
-                    when {
-                        loadState.refresh is LoadState.Loading -> {
-                            items(10) {
-                                PresentableItem(presentableState = PresentableItemState.Loading)
+                    state.apply {
+                        when {
+                            loadState.refresh is LoadState.Loading -> {
+                                items(10) {
+                                    PresentableItem(presentableState = PresentableItemState.Loading)
+                                }
                             }
-                        }
-                        loadState.append is LoadState.Loading -> {
-                            item { PresentableItem(presentableState = PresentableItemState.Loading) }
+                            loadState.append is LoadState.Loading -> {
+                                item { PresentableItem(presentableState = PresentableItemState.Loading) }
+                            }
+//                            loadState.refresh is LoadState.Error -> {
+//                                val e = state.loadState.refresh as LoadState.Error
+//
+//                                item { MovieItem(presentableState = PresentableState.Error) }
+//                            }
+//                            loadState.append is LoadState.Error -> {
+//                                val e = state.loadState.refresh as LoadState.Error
+//
+//                                item { MovieItem(presentableState = PresentableState.Error) }
+//                            }
                         }
                     }
                 }
-            }
-
-            AnimatedVisibility(
-                modifier = Modifier
-                    .align(Alignment.CenterStart)
-                    .padding(start = MaterialTheme.spacing.small),
-                visible = showScrollToBeginningButton,
-                enter = slideIn(
-                    animationSpec = tween(),
-                    initialOffset = {size -> IntOffset(-size.width, 0) }
-                ),
-                exit = fadeOut(animationSpec = spring()) + scaleOut(
-                    animationSpec = spring(),
-                    targetScale = 0.3f
-                )
-            ) {
-                ScrollToTopButton(
-                    onClick = onScrollToStartClick
-                )
+                androidx.compose.animation.AnimatedVisibility(
+                    modifier = Modifier
+                        .align(Alignment.CenterStart)
+                        .padding(start = MaterialTheme.spacing.small),
+                    visible = showScrollToBeginningButton,
+                    enter = slideIn(
+                        animationSpec = tween(),
+                        initialOffset = { size -> IntOffset(-size.width, 0) }),
+                    exit = fadeOut(animationSpec = spring()) + scaleOut(
+                        animationSpec = spring(),
+                        targetScale = 0.3f
+                    ),
+                ) {
+                    ScrollToTopButton(
+                        onClick = onScrollToStartClick
+                    )
+                }
             }
         }
     }

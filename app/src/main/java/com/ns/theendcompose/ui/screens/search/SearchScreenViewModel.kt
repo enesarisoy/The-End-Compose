@@ -12,34 +12,32 @@ import com.ns.theendcompose.domain.usecase.*
 import com.ns.theendcompose.domain.usecase.movie.GetPopularMoviesUseCaseImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
-import kotlinx.coroutines.NonCancellable.start
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
-import kotlin.time.Duration.Companion.milliseconds
+//import kotlin.time.Duration.Companion.milliseconds
 
 @HiltViewModel
 class SearchScreenViewModel @Inject constructor(
-    private val getDeviceLanguageUseCaseImpl: GetDeviceLanguageUseCaseImpl,
-    private val getSpeechToTextAvailableUseCaseImpl: GetSpeechToTextAvailableUseCaseImpl,
-    private val getCameraAvailableUseCaseImpl: GetCameraAvailableUseCaseImpl,
-    private val mediaAddSearchQueryUseCaseImpl: MediaAddSearchQueryUseCaseImpl,
-    private val mediaSearchQueriesUseCaseImpl: MediaSearchQueriesUseCaseImpl,
-    private val getMediaMultiSearchUseCaseImpl: GetMediaMultiSearchUseCaseImpl,
-    private val getPopularMoviesUseCaseImpl: GetPopularMoviesUseCaseImpl
+    private val getDeviceLanguageUseCase: GetDeviceLanguageUseCaseImpl,
+    private val getSpeechToTextAvailableUseCase: GetSpeechToTextAvailableUseCaseImpl,
+    private val getCameraAvailableUseCase: GetCameraAvailableUseCaseImpl,
+    private val mediaAddSearchQueryUseCase: MediaAddSearchQueryUseCaseImpl,
+    private val mediaSearchQueriesUseCase: MediaSearchQueriesUseCaseImpl,
+    private val getMediaMultiSearchUseCase: GetMediaMultiSearchUseCaseImpl,
+    private val getPopularMoviesUseCase: GetPopularMoviesUseCaseImpl
 ) : BaseViewModel() {
-
-    private val deviceLanguage: Flow<DeviceLanguage> = getDeviceLanguageUseCaseImpl()
-    private val queryDelay = 500.milliseconds
+    private val deviceLanguage: Flow<DeviceLanguage> = getDeviceLanguageUseCase()
+    private val queryDelay = org.joda.time.Duration.millis(500)
     private val minQueryLength = 3
 
     @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
     private val popularMovies: Flow<PagingData<Presentable>> =
         deviceLanguage.mapLatest { deviceLanguage ->
-            getPopularMoviesUseCaseImpl(deviceLanguage)
+            getPopularMoviesUseCase(deviceLanguage)
         }.flattenMerge().cachedIn(viewModelScope)
 
-    private val voiceSearchAvailable: Flow<Boolean> = getSpeechToTextAvailableUseCaseImpl()
-    private val cameraSearchAvailable: Flow<Boolean> = getCameraAvailableUseCaseImpl()
+    private val voiceSearchAvailable: Flow<Boolean> = getSpeechToTextAvailableUseCase()
+    private val cameraSearchAvailable: Flow<Boolean> = getCameraAvailableUseCase()
 
     private val queryState: MutableStateFlow<QueryState> = MutableStateFlow(QueryState.default)
     private val suggestions: MutableStateFlow<List<String>> = MutableStateFlow(emptyList())
@@ -49,7 +47,7 @@ class SearchScreenViewModel @Inject constructor(
         MutableStateFlow(ResultState.Default(popularMovies))
     private val queryLoading: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
-    private val searchOptionsState: StateFlow<SearchOptionsState> = combine(
+    private val searchOptionState: StateFlow<SearchOptionsState> = combine(
         voiceSearchAvailable, cameraSearchAvailable
     ) { voiceSearchAvailable, cameraSearchAvailable ->
         SearchOptionsState(
@@ -61,15 +59,15 @@ class SearchScreenViewModel @Inject constructor(
     private var queryJob: Job? = null
 
     val uiState: StateFlow<SearchScreenUIState> = combine(
-        searchOptionsState, queryState, suggestions, searchState, resultState
+        searchOptionState, queryState, suggestions, searchState, resultState
     ) { searchOptionsState, queryState, suggestions, searchState, resultState ->
         SearchScreenUIState(
-            searchOptionsState,
-            queryState.query,
-            suggestions,
-            searchState,
-            resultState,
-            queryState.loading
+            searchOptionsState = searchOptionsState,
+            query = queryState.query,
+            suggestions = suggestions,
+            searchState = searchState,
+            resultState = resultState,
+            queryLoading = queryState.loading
         )
     }.stateIn(viewModelScope, SharingStarted.Eagerly, SearchScreenUIState.default)
 
@@ -90,10 +88,10 @@ class SearchScreenViewModel @Inject constructor(
                     suggestions.emit(emptyList())
                 }
                 else -> {
-                    val querySuggestions = mediaSearchQueriesUseCaseImpl(queryText)
+                    val querySuggestions = mediaSearchQueriesUseCase(queryText)
                     suggestions.emit(querySuggestions)
 
-                    queryJob = createQueryJob(queryText).apply{
+                    queryJob = createQueryJob(queryText).apply {
                         start()
                     }
                 }
@@ -101,16 +99,30 @@ class SearchScreenViewModel @Inject constructor(
         }
     }
 
+    fun onQueryClear() {
+        onQueryChange("")
+    }
+
+    fun onQuerySuggestionSelected(searchQuery: String) {
+        if (queryState.value.query != searchQuery) {
+            onQueryChange(searchQuery)
+        }
+    }
+
+    fun addQuerySuggestion(searchQuery: SearchQuery) {
+        mediaAddSearchQueryUseCase(searchQuery)
+    }
+
     @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
     private fun createQueryJob(query: String): Job {
         return viewModelScope.launch(Dispatchers.IO) {
             try {
-                delay(queryDelay)
+                delay(queryDelay.millis)
 
                 queryLoading.emit(true)
 
                 val searchResults = deviceLanguage.mapLatest { deviceLanguage ->
-                    getMediaMultiSearchUseCaseImpl(
+                    getMediaMultiSearchUseCase(
                         query = query,
                         deviceLanguage = deviceLanguage
                     )
@@ -128,26 +140,11 @@ class SearchScreenViewModel @Inject constructor(
         }
     }
 
-    fun onQueryClear() {
-        onQueryChange("")
-    }
-
-    fun onQuerySuggestionSelected(searchQuery: String) {
-        if (queryState.value.query != searchQuery) {
-            onQueryChange(searchQuery)
-        }
-    }
-
-    fun addQuerySuggestion(searchQuery: SearchQuery) {
-        mediaAddSearchQueryUseCaseImpl(searchQuery)
-    }
-
     override fun onCleared() {
         super.onCleared()
         queryJob?.cancel()
     }
 }
-
 
 sealed class SearchState {
     object EmptyQuery : SearchState()

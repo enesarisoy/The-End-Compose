@@ -32,6 +32,8 @@ import com.ns.theendcompose.data.model.movie.MovieType
 import com.ns.theendcompose.ui.components.dialogs.ExitDialog
 import com.ns.theendcompose.ui.components.sections.PresentableSection
 import com.ns.theendcompose.ui.components.sections.PresentableTopSection
+import com.ns.theendcompose.ui.screens.destinations.BrowseMoviesScreenDestination
+import com.ns.theendcompose.ui.screens.destinations.DiscoverMoviesScreenDestination
 import com.ns.theendcompose.ui.screens.destinations.MovieDetailsScreenDestination
 import com.ns.theendcompose.ui.screens.destinations.MovieScreenDestination
 import com.ns.theendcompose.ui.theme.TheEndComposeTheme
@@ -71,12 +73,20 @@ fun AnimatedVisibilityScope.MovieScreen(
         navigator.navigate(destination)
     }
 
+    val onBrowseMoviesClicked = { type: MovieType ->
+        navigator.navigate(BrowseMoviesScreenDestination(type))
+    }
+
+    val onDiscoverMoviesClicked = {
+        navigator.navigate(DiscoverMoviesScreenDestination)
+    }
+
     MoviesScreenContent(
         uiState = uiState,
         scrollState = scrollState,
         onMovieClicked = onMovieClicked,
-        onBrowseMoviesClicked = {},
-        onDiscoverMoviesClicked = {}
+        onBrowseMoviesClicked = onBrowseMoviesClicked,
+        onDiscoverMoviesClicked = onDiscoverMoviesClicked
     )
 }
 
@@ -187,7 +197,9 @@ fun MoviesScreenContent(
                     },
                 scrollState = scrollState,
                 scrollValueLimit = topSectionScrollLimitValue,
-                onMoreClick = {}
+                onMoreClick = {
+                    onBrowseMoviesClicked(MovieType.NowPlaying)
+                }
             )
 
             PresentableSection(
@@ -197,7 +209,7 @@ fun MoviesScreenContent(
                     .fillMaxWidth()
                     .animateContentSize(),
                 onPresentableClick = onMovieClicked,
-//                onMoreClick = onDiscoverMoviesClicked
+                onMoreClick = onDiscoverMoviesClicked
             )
 
             PresentableSection(
@@ -207,7 +219,7 @@ fun MoviesScreenContent(
                 title = stringResource(R.string.upcoming_movies),
                 state = upcomingLazyItems,
                 onPresentableClick = onMovieClicked,
-//                onMoreClick = onDiscoverMoviesClicked
+                onMoreClick = onDiscoverMoviesClicked
             )
             PresentableSection(
                 modifier = Modifier
@@ -216,7 +228,7 @@ fun MoviesScreenContent(
                 title = stringResource(R.string.trending_movies),
                 state = trendingLazyItems,
                 onPresentableClick = onMovieClicked,
-//                onMoreClick = onDiscoverMoviesClicked
+                onMoreClick = onDiscoverMoviesClicked
             )
             PresentableSection(
                 modifier = Modifier
@@ -225,7 +237,7 @@ fun MoviesScreenContent(
                 title = stringResource(R.string.top_rated_movies),
                 state = topRatedLazyItems,
                 onPresentableClick = onMovieClicked,
-//                onMoreClick = onDiscoverMoviesClicked
+                onMoreClick = onDiscoverMoviesClicked
             )
             Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
         }

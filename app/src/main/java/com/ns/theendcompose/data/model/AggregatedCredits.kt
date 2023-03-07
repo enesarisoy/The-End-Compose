@@ -8,6 +8,7 @@ data class AggregatedCredits(
     val cast: List<Cast>,
     val crew: List<Crew>,
     val id: Int
+    // https://api.themoviedb.org/3/movie/550/credits?api_key=a3fd333c971ff4c13b91be58a8522eb1&language=en-US
 )
 
 @JsonClass(generateAdapter = true)

@@ -2,7 +2,31 @@ package com.ns.theendcompose.utils
 
 import java.text.NumberFormat
 import java.util.*
-import kotlin.time.Duration.Companion.minutes
+import org.joda.time.Duration
+import org.joda.time.DurationFieldType
+import org.joda.time.Period
+import org.joda.time.format.PeriodFormatterBuilder
+
+fun Int.formattedRuntime(): String? {
+    val period = Period.minutes(this)
+    val hours = period.get(DurationFieldType.hours())
+    val minutes = period.get(DurationFieldType.minutes())
+
+    val formatter = PeriodFormatterBuilder()
+        .appendHours()
+        .appendSuffix("h")
+        .appendSeparator(" ")
+        .appendMinutes()
+        .appendSuffix("m")
+        .toFormatter()
+
+    val formatted = formatter.print(period)
+    return if (hours == 0 && minutes == 0) null else formatted
+}
+
+
+
+/*import kotlin.time.Duration.Companion.minutes
 
 fun Int.formattedRuntime(): String? {
     return minutes.toComponents { hours, minutes, _, _ ->
@@ -13,7 +37,7 @@ fun Int.formattedRuntime(): String? {
             if (isEmpty()) null else joinToString(separator = " ")
         }
     }
-}
+}*/
 
 fun Float.singleDecimalPlaceFormatted(): String {
     return String.format("%.1f", this)

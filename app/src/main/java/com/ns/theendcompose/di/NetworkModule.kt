@@ -27,6 +27,7 @@ import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.joda.time.Duration
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.*
@@ -93,9 +94,9 @@ object NetworkModule {
         .addInterceptor(chuckerInterceptor)
         .addInterceptor(authenticationInterceptor)
         .cache(cache)
-        .connectTimeout(ApiParams.Timeouts.connect.toJavaDuration())
-        .writeTimeout(ApiParams.Timeouts.write.toJavaDuration())
-        .readTimeout(ApiParams.Timeouts.read.toJavaDuration())
+//        .connectTimeout(Duration.millis(ApiParams.Timeouts.connect.toLongMilliseconds()))
+//        .writeTimeout(ApiParams.Timeouts.write.toJavaDuration())
+//        .readTimeout(ApiParams.Timeouts.read.toJavaDuration())
         .build()
 
     @Singleton

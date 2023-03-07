@@ -36,6 +36,7 @@ import coil.compose.AsyncImagePainter
 import com.ns.theendcompose.R
 import com.ns.theendcompose.data.model.DetailPresentable
 import com.ns.theendcompose.data.model.DetailPresentableItemState
+import com.ns.theendcompose.ui.components.items.DetailPresentableItem
 import com.ns.theendcompose.ui.theme.sizes
 import com.ns.theendcompose.ui.theme.spacing
 import com.ns.theendcompose.utils.*
@@ -43,7 +44,6 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.google.accompanist.pager.rememberPagerState
-import com.ns.theendcompose.ui.components.items.DetailPresentableItem
 import kotlin.math.absoluteValue
 import kotlin.math.max
 

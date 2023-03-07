@@ -1,6 +1,6 @@
 package com.ns.theendcompose.data.remote.api
 
-import kotlin.time.Duration.Companion.seconds
+import org.joda.time.Duration
 
 object ApiParams {
 
@@ -9,9 +9,9 @@ object ApiParams {
     const val cacheSize = (10 * 1024 * 1024).toLong()
 
     object Timeouts {
-        val connect = 10.seconds
-        val write = 10.seconds
-        val read = 10.seconds
+        val connect = Duration.standardSeconds(10)
+        val write = Duration.standardSeconds(10)
+        val read = Duration.standardSeconds(10)
     }
 
 }

@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.window.PopupProperties
+import com.ns.theendcompose.R
 import com.ns.theendcompose.ui.theme.spacing
 import com.ns.theendcompose.utils.partiallyAnnotatedString
 
@@ -51,32 +52,39 @@ fun QueryTextField(
     val suggestionsExpanded by derivedStateOf {
         hasFocus && suggestions.isNotEmpty()
     }
-
     Column(
         modifier = modifier.onFocusChanged { focusState -> hasFocus = focusState.hasFocus },
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.extraSmall)
     ) {
         Box(modifier = modifier.fillMaxWidth()) {
             TextField(
-                value = query.orEmpty(),
-                onValueChange = onQueryChange,
-                modifier = modifier
+                modifier = Modifier
                     .fillMaxWidth()
                     .focusRequester(focusRequester),
+                value = query.orEmpty(),
+                onValueChange = onQueryChange,
                 placeholder = {
-                    Text(text = stringResource(id = com.ns.theendcompose.R.string.search_placeholder))
+                    Text(text = stringResource(R.string.search_placeholder))
+
                 },
                 trailingIcon = {
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        AnimatedVisibility(visible = loading, enter = fadeIn(), exit = fadeOut()) {
+                        AnimatedVisibility(
+                            visible = loading,
+                            enter = fadeIn(),
+                            exit = fadeOut()
+                        ) {
                             CircularProgressIndicator()
                         }
                         if (showClearButton) {
                             IconButton(onClick = onQueryClear) {
-                                Icon(imageVector = Icons.Filled.Clear, contentDescription = null)
+                                Icon(
+                                    imageVector = Icons.Filled.Clear,
+                                    contentDescription = "clear"
+                                )
                             }
                         } else {
                             Row {
@@ -88,14 +96,14 @@ fun QueryTextField(
                                         )
                                     }
                                 }
-                                if (cameraSearchAvailable) {
-                                    IconButton(onClick = onCameraSearchClick) {
-                                        Icon(
-                                            imageVector = Icons.Filled.CameraAlt,
-                                            contentDescription = "camera"
-                                        )
-                                    }
-                                }
+//                                if (cameraSearchAvailable) {
+//                                    IconButton(onClick = onCameraSearchClick) {
+//                                        Icon(
+//                                            imageVector = Icons.Filled.CameraAlt,
+//                                            contentDescription = "camera"
+//                                        )
+//                                    }
+//                                }
                             }
                         }
                     }
@@ -108,17 +116,16 @@ fun QueryTextField(
                 ),
                 singleLine = true,
                 colors = TextFieldDefaults.textFieldColors(
-                    containerColor = MaterialTheme.colorScheme.background,
+//                    containerColor = MaterialTheme.colorScheme.background,
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent,
                     disabledIndicatorColor = Color.Transparent
                 )
             )
-
             SuggestionsDropdown(
-                query = query,
-                expanded = suggestionsExpanded,
                 modifier = Modifier.fillMaxWidth(),
+                expanded = suggestionsExpanded,
+                query = query,
                 suggestions = suggestions,
                 onSuggestionClick = onSuggestionClick
             )
@@ -128,7 +135,7 @@ fun QueryTextField(
 }
 
 @Composable
-fun SuggestionsDropdown(
+private fun SuggestionsDropdown(
     query: String?,
     expanded: Boolean,
     modifier: Modifier = Modifier,
@@ -136,9 +143,9 @@ fun SuggestionsDropdown(
     onSuggestionClick: (String) -> Unit = {}
 ) {
     DropdownMenu(
+        modifier = modifier,
         expanded = expanded,
         onDismissRequest = {},
-        modifier = modifier,
         properties = PopupProperties(
             focusable = false,
             dismissOnBackPress = false,
@@ -147,6 +154,7 @@ fun SuggestionsDropdown(
     ) {
         suggestions.map { suggestion ->
             DropdownMenuItem(
+                onClick = { onSuggestionClick(suggestion) },
                 text = {
                     val annotatedString = partiallyAnnotatedString(
                         text = suggestion,
@@ -158,19 +166,19 @@ fun SuggestionsDropdown(
                     ) {
                         Icon(
                             imageVector = Icons.Filled.History,
-                            contentDescription = null
+                            contentDescription = null,
                         )
                         Text(
-                            text = annotatedString,
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
                             modifier = Modifier
                                 .weight(1f)
-                                .padding(horizontal = MaterialTheme.spacing.small)
+                                .padding(horizontal = MaterialTheme.spacing.small),
+                            text = annotatedString,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
-                },
-                onClick = { onSuggestionClick(suggestion) })
+                }
+            )
         }
     }
 }

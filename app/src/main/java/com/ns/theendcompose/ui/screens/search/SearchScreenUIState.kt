@@ -10,7 +10,7 @@ data class SearchScreenUIState(
     val searchState: SearchState,
     val resultState: ResultState,
     val queryLoading: Boolean
-){
+) {
     companion object {
         val default: SearchScreenUIState = SearchScreenUIState(
             searchOptionsState = SearchOptionsState.default,
@@ -27,8 +27,8 @@ data class SearchScreenUIState(
 data class SearchOptionsState(
     val voiceSearchAvailable: Boolean,
     val cameraSearchAvailable: Boolean
-) {
-    companion object {
+){
+    companion object{
         val default: SearchOptionsState = SearchOptionsState(
             voiceSearchAvailable = false,
             cameraSearchAvailable = false

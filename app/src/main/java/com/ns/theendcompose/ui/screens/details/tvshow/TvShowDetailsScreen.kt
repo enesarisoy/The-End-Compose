@@ -105,39 +105,39 @@ fun AnimatedVisibilityScope.TvShowDetailsScreen(
         val tvShowId = uiState.tvShowDetails?.id
 
         if (tvShowId != null) {
-//            val destination = ReviewsScreenDestination(
-//                startRoute = uiState.startRoute,
-//                mediaId = tvShowId,
-//                type = MediaType.Tv
-//            )
-//
-//            navigator.navigate(destination)
+            val destination = ReviewsScreenDestination(
+                startRoute = uiState.startRoute,
+                mediaId = tvShowId,
+                type = MediaType.Tv
+            )
+
+            navigator.navigate(destination)
         }
     }
     val onSeasonClicked = { seasonNumber: Int ->
         val tvShowId = uiState.tvShowDetails?.id
 
         if (tvShowId != null) {
-//            val destination = SeasonDetailsScreenDestination(
-//                tvShowId = tvShowId,
-//                seasonNumber = seasonNumber,
-//                startRoute = uiState.startRoute
-//            )
-//
-//            navigator.navigate(destination)
+            val destination = SeasonDetailsScreenDestination(
+                tvShowId = tvShowId,
+                seasonNumber = seasonNumber,
+                startRoute = uiState.startRoute
+            )
+
+            navigator.navigate(destination)
         }
     }
     val onSimilarMoreClicked = {
         val tvShowId = uiState.tvShowDetails?.id
 
         if (tvShowId != null) {
-//            val destination = RelatedTvShowScreenDestination(
-//                tvShowId = tvShowId,
-//                type = RelationType.Similar,
-//                startRoute = uiState.startRoute
-//            )
-//
-//            navigator.navigate(destination)
+            val destination = RelatedTvShowScreenDestination(
+                tvShowId = tvShowId,
+                type = RelationType.Similar,
+                startRoute = uiState.startRoute
+            )
+
+            navigator.navigate(destination)
         }
     }
 
@@ -145,13 +145,13 @@ fun AnimatedVisibilityScope.TvShowDetailsScreen(
         val tvShowId = uiState.tvShowDetails?.id
 
         if (tvShowId != null) {
-//            val destination = RelatedTvShowScreenDestination(
-//                tvShowId = tvShowId,
-//                type = RelationType.Recommended,
-//                startRoute = uiState.startRoute
-//            )
-//
-//            navigator.navigate(destination)
+            val destination = RelatedTvShowScreenDestination(
+                tvShowId = tvShowId,
+                type = RelationType.Recommended,
+                startRoute = uiState.startRoute
+            )
+
+            navigator.navigate(destination)
         }
     }
     TvShowDetailsScreenContent(

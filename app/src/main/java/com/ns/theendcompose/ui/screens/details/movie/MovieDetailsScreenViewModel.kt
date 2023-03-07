@@ -19,10 +19,11 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import org.joda.time.Seconds
 import java.util.*
 import javax.inject.Inject
-import kotlin.time.Duration.Companion.minutes
-import kotlin.time.Duration.Companion.seconds
+//import kotlin.time.Duration.Companion.minutes
+//import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel
 class MovieDetailsScreenViewModel @Inject constructor(
@@ -171,21 +172,36 @@ class MovieDetailsScreenViewModel @Inject constructor(
             _movieDetails.collectLatest { details ->
                 while (isActive) {
                     details?.runtime?.let { runtime ->
+//                        if (runtime > 0) {
+//                            runtime.minutes.toComponents { hours, minutes, _, _ ->
+//                                val time = Calendar.getInstance().apply {
+//                                    time = Date()
+//
+//                                    add(Calendar.HOUR, hours.toInt())
+//                                    add(Calendar.MINUTE, minutes)
+//                                }.time
+//
+//                                watchAtTime.emit(time)
+//                            }
+//                        }
                         if (runtime > 0) {
-                            runtime.minutes.toComponents { hours, minutes, _, _ ->
-                                val time = Calendar.getInstance().apply {
-                                    time = Date()
+                            val period = org.joda.time.Duration.standardMinutes(runtime.toLong()).toPeriod()
 
-                                    add(Calendar.HOUR, hours.toInt())
-                                    add(Calendar.MINUTE, minutes)
-                                }.time
+                            val hours = period.hours
+                            val minutes = period.minutes
 
-                                watchAtTime.emit(time)
-                            }
+                            val time = Calendar.getInstance().apply {
+                                time = Date()
+
+                                add(Calendar.HOUR, hours)
+                                add(Calendar.MINUTE, minutes)
+                            }.time
+
+                            watchAtTime.emit(time)
                         }
                     }
 
-                    delay(10.seconds)
+                    delay(org.joda.time.Duration.standardSeconds(10).millis)
                 }
             }
         }

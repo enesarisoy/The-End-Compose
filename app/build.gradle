@@ -154,4 +154,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-runtime-compose:$lifecycle_version"
 
+    implementation 'joda-time:joda-time:2.10.12'
+
 }

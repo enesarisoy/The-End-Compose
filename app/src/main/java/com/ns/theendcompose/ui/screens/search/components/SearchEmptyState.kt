@@ -3,7 +3,6 @@ package com.ns.theendcompose.ui.screens.search.components
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
